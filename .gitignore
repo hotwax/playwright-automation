@@ -33,6 +33,8 @@ npm-debug.log*
 /platforms
 /plugins
 /www
+/playwright-report
+/playwright
 
 
 !.env.example
