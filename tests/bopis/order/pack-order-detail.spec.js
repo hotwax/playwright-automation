@@ -4,7 +4,7 @@ test('Pack order from order details page test', async ({ page }) => {
 
     await page.goto(process.env.CURRENT_APP_URL+'/tabs/orders'); 
     // Click on the first Order Card
-    const orderCard = page.getByTestId('open-order-card').first();
+    const orderCard = page.getByTestId('order-card').first();
     await orderCard.click();
     
     // Verify the Order Details Page is Loaded
@@ -21,11 +21,11 @@ test('Pack order from order details page test', async ({ page }) => {
     await expect(pickerModal).toBeVisible();
 
     try {
-      const pickerOption= page.getByTestId('picker-option').first();
+      const pickerOption= page.getByTestId('assign-picker-radio').first();
       await expect(pickerOption).toBeVisible();
       await pickerOption.click();
 
-      const savePickerButton = page.getByTestId('assign-picker-modal-button');
+      const savePickerButton = page.getByTestId('assign-picker-save-button');
       await expect(savePickerButton).toBeVisible();
       await savePickerButton.click();
     } catch (error) {
@@ -33,7 +33,8 @@ test('Pack order from order details page test', async ({ page }) => {
     }
 
     // Verify Confirmation Message that Order is Packed 
-    const packedConfirmationText = page.locator('text=Order is now ready to handover.');
+    const packedConfirmationText = page.getByTestId('ready-handover-label');
+    await expect(packedConfirmationText).toHaveText('Order is now ready to handover.');
     await expect(packedConfirmationText).toBeVisible();
     
 });
