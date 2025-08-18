@@ -12,7 +12,7 @@ test('login via UI and save storage state', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Username' }).fill(process.env.USERNAME);
   await page.getByRole('textbox', { name: 'Password' }).fill(process.env.PASSWORD);
   await page.getByRole('button', { name: 'Login' }).click();
-  await page.goto(process.env.CURRENT_APP_URL);
+  // await page.goto(process.env.CURRENT_APP_URL);
   await page.waitForLoadState('networkidle');
 
   // Wait for some element visible only when logged in, e.g. dashboard
