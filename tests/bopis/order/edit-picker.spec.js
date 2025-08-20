@@ -1,81 +1,36 @@
 import { expect, test } from '@playwright/test';
-import { BopisOrdersPage} from '../pages/Order';
+import { OpenOrderPage } from '../pages/orders/open-orders.page';
+import { OrderDetailPage } from '../pages/order-detail/order-detail.page';
+import { PackedOrderPage } from '../pages/orders/pack-orders.page';
 
-
-// Edit picker from Open detail page
 test('Edit Picker from Order Detail Page (In Open Tab)', async ({ page }) => {
   
   await page.goto(process.env.CURRENT_APP_URL);
-
-  const bopis = new BopisOrdersPage(page);
-  //  Go to "Open" tab
-  await bopis.goToOpenTab();
+  const openOrders = new OpenOrderPage(page);
+  const detailPage = new OrderDetailPage(page);
   
-  //  Open Order Card 
-  await bopis.clickFirstOrderCard();
+  await openOrders.goToOpenTab();
+  await openOrders.firstCard.click();
 
-  // Wait for the order details page to load
-  const orderDetailPage= page.getByTestId('order-details-page');
-  await expect(orderDetailPage).toBeVisible();
+  await detailPage.verifyDetailPage();
+  await detailPage.openEditPickerModal();
+  await detailPage.selectDifferentPicker();
+  await detailPage.saveEditPicker();
+  await detailPage.verifyPickerReplacedToast();
+});
 
-  // click the edit picker modal
-  await bopis.clickByTestId('edit-picker-chip');
-  
-  // Wait for the editpicker modal to open
-  try {
-    const editPickerModalheader = page.getByTestId('edit-picker-modal-header');
-    await expect(editPickerModalheader).toBeVisible();
-    const getallradio= page.getByTestId('edit-picker-radio');
-    // now select which first radio is not already selected
-    const selectedIndex = await getallradio.evaluateAll((radios) => {
-      return radios.findIndex(radio => !radio.checked);
-    });
-    await bopis.clickByTestId('edit-picker-radio', selectedIndex);
-    await bopis.clickByTestId('edit-picker-save-button');
-    await bopis.clickByRole('button', 'Replace');
-    await bopis.verifyTextExists('Pickers successfully replaced in the picklist with the new selections.');
 
-  } catch (error) {
-    console.error(`Something went wrong: ${error.message}`);
-  }
-
-})
-
-// Edit picker from Packed detail page
 test('Edit Picker from Order Detail Page (In Packed Tab)', async ({ page }) => {
-  
   await page.goto(process.env.CURRENT_APP_URL);
-
-  const bopis = new BopisOrdersPage(page);
-  // Step 2: Go to packed tab
-  await bopis.goToPackedTab();
+  const packedOrders = new PackedOrderPage(page);
+  const detailPage = new OrderDetailPage(page);
   
-  //  Open Order Card 
-  await bopis.clickFirstOrderCard();
+  await packedOrders.goToPackedTab();
+  await packedOrders.firstCard.click();
 
-  // Wait for the order details page to load
-  const orderDetailPage= page.getByTestId('order-details-page');
-  await expect(orderDetailPage).toBeVisible();
-
-  // click the edit picker modal
-  await bopis.clickByTestId('edit-picker-chip');
-  
-  // Wait for the editpicker modal to open
-  try {
-    const editPickerModalheader = page.getByTestId('edit-picker-modal-header');
-    await expect(editPickerModalheader).toBeVisible();
-    const getallradio= page.getByTestId('edit-picker-radio');
-    // now select which first radio is not already selected
-    const selectedIndex = await getallradio.evaluateAll((radios) => {
-      return radios.findIndex(radio => !radio.checked);
-    });
-    await bopis.clickByTestId('edit-picker-radio', selectedIndex);
-    await bopis.clickByTestId('edit-picker-save-button');
-    await bopis.clickByRole('button', 'Replace');
-    await bopis.verifyTextExists('Pickers successfully replaced in the picklist with the new selections.');
-
-  } catch (error) {
-    console.error(`Something went wrong: ${error.message}`);
-  }
-
-})
+  await detailPage.verifyDetailPage();
+  await detailPage.openEditPickerModal();
+  await detailPage.selectDifferentPicker();
+  await detailPage.saveEditPicker();
+  await detailPage.verifyPickerReplacedToast();
+});
