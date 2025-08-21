@@ -45,8 +45,8 @@ export class OpenOrderPage {
 
   async rejectionModal(){
     await expect(this.rejectModalHeader).toBeVisible();
-    await expect(this.rejectionReasonButton).toBeVisible();
-    await this.rejectionReasonButton.click();
+    await expect(this.rejectionReasonButton.first()).toBeVisible();
+    await this.rejectionReasonButton.first().click();
     await expect(this.rejectionReasonOption.first()).toBeVisible();
     await this.rejectionReasonOption.first().click();
     await this.submitRejectButton.click();
@@ -83,7 +83,7 @@ export class OpenOrderPage {
     await expect(this.printPicklistButton).toBeVisible();
     await this.printPicklistButton.click();
   }
-  
+
   async handlePopupAndVerify() {
     const popupPromise = this.page.waitForEvent('popup').catch(() => null);
     const result = await Promise.race([popupPromise]);
