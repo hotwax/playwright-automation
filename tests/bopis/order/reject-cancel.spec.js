@@ -1,148 +1,67 @@
-import { expect, test } from '@playwright/test';
-import { BopisOrdersPage} from '../pages/Order';
+import { test } from '@playwright/test';
+import { OpenOrderPage } from '../pages/orders/open-orders.page';
+import { OrderDetailPage } from '../pages/order-detail/order-detail.page';
+import { PackedDetailPage } from '../pages/order-detail/pack-order-detail.page';
+import { OrderPage } from '../pages/orders/orders.page';
+import { OpenDetailPage } from '../pages/order-detail/open-order-detail.page';
 
-// Single Item Order Rejection
-test('Open Single Item order Rejection from order details page test', async ({ page }) => {
-
-  await page.goto(process.env.CURRENT_APP_URL); 
-  const bopis = new BopisOrdersPage(page);
-
-  // Go to "Open" tab
-  await bopis.goToOpenTab();
+// ---------------- SINGLE ITEM ORDER REJECTION ----------------
+test('Open Details Page: Single Item Order Rejection', async ({ page }) => {  
+  const openOrders = new OpenOrderPage(page);
+  const orderDetail = new OrderDetailPage(page);
+  const openOrderDetail= new OpenDetailPage(page);
+  const orderPage= new OrderPage(page);
   
-  // Click on the first order card
-  await bopis.clickFirstOrderCard();  
-  // Verify the Order Details Page is Loaded
-  const orderDetail= page.getByTestId('order-details-page');
-  await expect(orderDetail).toBeVisible();
-
-  // Trash button
-  await bopis.clickByTestId('select-rejected-item-button');
-
-  // First rejection reason
-  await bopis.clickByTestId('select-rejection-reason-button');
-
-  // Change reason
-  await bopis.clickByTestId('change-rejection-reason-chip');
-
-  // Select reason again
-  await bopis.clickByTestId('select-rejection-reason-button', 1);
-
-  // Submit rejection
-  await bopis.expectEnabled('submit-rejected-items-button');
-  await bopis.clickByTestId('submit-rejected-items-button');
-
-  // Verify the  item is rejected by checking the text All item are Rejected
-  await bopis.verifyTextExists('All order items are rejected');
-
+  await page.goto(process.env.CURRENT_APP_URL);
+  await openOrders.goToOpenTab();
+  await orderPage.clickFirstOrderCard();
+  await orderDetail.verifyDetailPage();
+  // Reject a single item
+  await openOrderDetail.rejectSingleItem();
 });
 
-// Multiple Item Order Rejection
-test('Open Multiple Item order Rejection from order details page test', async ({ page }) => {
+
+// ---------------- MULTIPLE ITEM ORDER REJECTION ----------------
+test('Open Details Page: Multiple Item Order Rejection', async ({ page }) => {
+  await page.goto(process.env.CURRENT_APP_URL);
   
-await page.goto(process.env.CURRENT_APP_URL); 
-  const bopis = new BopisOrdersPage(page);
+  const openOrders = new OpenOrderPage(page);
+  const orderDetail = new OrderDetailPage(page);
+  const openOrderDetail= new OpenDetailPage(page);
+  const orderPage= new OrderPage(page);
 
-  // Go to "Open" tab
-  await bopis.goToOpenTab();
-  
-  // Click on the first order card
-  await bopis.clickFirstOrderCard();  
-  // Verify the Order Details Page is Loaded
-  const orderDetail= page.getByTestId('order-details-page');
-  await expect(orderDetail).toBeVisible();
-
-  // Click Trash button  
-  const trashButton=page.getByTestId('select-rejected-item-button');
-  const totalItems = await trashButton.count();
-  const firstItem = trashButton.first();
-  await expect(firstItem).toBeVisible();
-  await firstItem.click();
-
-  // First rejection reason
-  await bopis.clickByTestId('select-rejection-reason-button');
-
-  // Submit rejection
-  await bopis.expectEnabled('submit-rejected-items-button');
-  await bopis.clickByTestId('submit-rejected-items-button');
-
-  // Verify the  item is rejected by checking the Count of item  
-  const availabelItem = orderDetail.getByTestId('select-rejected-item-button');
-  await expect(availabelItem).toHaveCount(totalItems-1);
-  
+  await openOrders.goToOpenTab();
+  await orderPage.clickFirstOrderCard();
+  await orderDetail.verifyDetailPage();
+  // Reject one item from multiple
+  await openOrderDetail.rejectOneItemFromMultiple();
 });
 
-// Single Item order Cancellation 
-test('Packed Single Item order Cancellation from order details page test', async ({ page }) => {
-  
-  await page.goto(process.env.CURRENT_APP_URL); 
-  const bopis = new BopisOrdersPage(page);
 
-  // Go to "Packed" tab
-  await bopis.goToPackedTab();
-  
-  // Click on the first order card
-  await bopis.clickFirstOrderCard();  
+// ---------------- SINGLE ITEM ORDER CANCELLATION ----------------
+test('Packed Details Page: Single Item Order Cancellation', async ({ page }) => {
+  await page.goto(process.env.CURRENT_APP_URL);
 
-  // Verify the Order Details Page is Loaded
-  const orderDetail= page.getByTestId('order-details-page');
-  await expect(orderDetail).toBeVisible();
+  const openOrders = new OpenOrderPage(page);
+  const packedDetail = new PackedDetailPage(page);
+  const orderPage= new OrderPage(page);
 
-  // Trash button
-  await bopis.clickByTestId('select-cancel-item-button', 0, orderDetail);
-
-  // First rejection reason
-  await bopis.clickByTestId('select-cancellation-reason-button');
-
-  // Submit rejection
-  await bopis.expectEnabled('submit-cancel-items-button');
-  await bopis.clickByTestId('submit-cancel-items-button');
-
-  expect(page.getByTestId("confirm-cancel-modal-header")).toBeVisible();
-  await bopis.clickByTestId('confirm-cancellation-button');
-
-
-  // Verify the  item is rejected by checking the text All item are Rejected
-  await bopis.verifyTextExists('All order items are cancelled');
-
+  await orderPage.goToPackedTab();
+  await orderPage.clickFirstOrderCard();
+  await packedDetail.verifyDetailPageVisible();
+  // Cancel single item
+  await packedDetail.cancelSingleItem();
 });
 
-// Multiple Item  Order Cancellation
-test('Packed Multiple Item order Cancellation from order details page test', async ({ page }) => {
-  
-  await page.goto(process.env.CURRENT_APP_URL); 
-  const bopis = new BopisOrdersPage(page);
 
-  // Go to "Packed" tab
-  await bopis.goToPackedTab();
-  
-  // Click on the first order card
-  await bopis.clickFirstOrderCard();  
-
-  // Verify the Order Details Page is Loaded
-  const orderDetail= page.getByTestId('order-details-page');
-  await expect(orderDetail).toBeVisible();
-
-  // Click Trash button  
-  const trashButton=page.getByTestId('select-cancel-item-button');
-  const totalItems = await trashButton.count();
-  const firstItem = trashButton.first();
-  await expect(firstItem).toBeVisible();
-  await firstItem.click();
-
-  // First rejection reason
-  await bopis.clickByTestId('select-cancellation-reason-button');
-
-  // Submit rejection
-  await bopis.expectEnabled('submit-cancel-items-button');
-  await bopis.clickByTestId('submit-cancel-items-button');
-
-  expect(page.getByTestId("confirm-cancel-modal-header")).toBeVisible();
-  await bopis.clickByTestId('confirm-cancellation-button');
-
-
-  // Verify the  item is Cancelled by checking the Count of item
-  const availabelItem = orderDetail.getByTestId('select-cancel-item-button');
-  await expect(availabelItem).toHaveCount(totalItems - 1);
-
+// ---------------- MULTIPLE ITEM ORDER CANCELLATION ----------------
+test('Packed Details Page: Multiple Item Order Cancellation', async ({ page }) => {
+  await page.goto(process.env.CURRENT_APP_URL);
+  const packedDetail = new PackedDetailPage(page);
+  const orderPage= new OrderPage(page);
+  await orderPage.goToPackedTab();
+  await orderPage.clickFirstOrderCard();
+  await packedDetail.verifyDetailPageVisible();
+  // Cancel one item from multiple
+  await packedDetail.cancelOneItemFromMultiple();
 });

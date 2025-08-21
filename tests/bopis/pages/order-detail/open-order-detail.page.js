@@ -66,7 +66,7 @@ export class OpenDetailPage {
     await this.printPicklistButton.click();
   }
 
-  async verifyToastMessage(message) {
+  async verifyOrderRejectMessage(message) {
     await expect(this.orderItemRejection).toBeVisible();
   }
 
@@ -83,7 +83,7 @@ export class OpenDetailPage {
     await this.submitRejectionButton.click();
 
     // Verify toast message
-    await this.verifyToastMessage();
+    await this.verifyOrderRejectMessage();
 
   }
 
