@@ -14,14 +14,15 @@ export class PackedDetailPage {
     
     // Cancellation Workflow Elements
     this.cancelItemButton = this.orderDetailsPage.getByTestId('select-cancel-item-button');
-    this.cancelReasonButton = this.orderDetailsPage.getByTestId('select-cancellation-reason-button');
-    this.cancelReasonChip = this.orderDetailsPage.getByTestId('change-cancel-reason-chip');
     this.cancelItemsSubmitButton = this.orderDetailsPage.getByTestId('submit-cancel-items-button');
+    this.cancelReasonButton = this.page.getByTestId('select-cancellation-reason-button');
+    this.cancelReasonChip = this.page.getByTestId('change-cancel-reason-chip');
     this.confirmCancellationButton = this.page.getByTestId('confirm-cancellation-button');
 
     // Packing slip button for printing
     this.packingSlipButton = this.orderDetailsPage.getByTestId('packing-slip-button');
     
+    this.orderRejectedsuccess=this.page.getByText('All order items are cancelled')
   }
 
   async verifyDetailPageVisible() {
@@ -40,26 +41,24 @@ export class PackedDetailPage {
   }
 
 
-  async cancelSingleItem(reasonText) {
+  async cancelSingleItem() {
     await expect(this.cancelItemButton.first()).toBeVisible();
     await this.cancelItemButton.first().click();
 
-    await expect(this.cancelReasonButton).toBeVisible();
-    await this.cancelReasonButton.click();
+    await expect(this.cancelReasonButton.first()).toBeVisible();
+    await this.cancelReasonButton.first().click();
 
-    const reasonOption = this.page.getByText(reasonText);
-    await expect(reasonOption).toBeVisible();
-    await reasonOption.click();
-
-    await expect(this.cancelItemsSubmitButton).toBeVisible();
+    await expect(this.cancelItemsSubmitButton).toBeEnabled();
     await this.cancelItemsSubmitButton.click();
 
     await expect(this.confirmCancellationButton).toBeVisible();
     await this.confirmCancellationButton.click();
+    // verify the order rejected success
+    await expect(this.orderRejectedsuccess).toBeVisible();
   }
 
 
-  async cancelOneItemFromMultiple(reasonText) {
+  async cancelOneItemFromMultiple() {
     const totalItems = await this.cancelItemButton.count();
     expect(totalItems).toBeGreaterThan(1);
 
@@ -67,14 +66,10 @@ export class PackedDetailPage {
     await expect(firstItem).toBeVisible();
     await firstItem.click();
 
-    await expect(this.cancelReasonButton).toBeVisible();
-    await this.cancelReasonButton.click();
+    await expect(this.cancelReasonButton.first()).toBeVisible();
+    await this.cancelReasonButton.first().click();
 
-    const reasonOption = this.page.getByText(reasonText);
-    await expect(reasonOption).toBeVisible();
-    await reasonOption.click();
-
-    await expect(this.cancelItemsSubmitButton).toBeVisible();
+    await expect(this.cancelItemsSubmitButton).toBeEnabled();
     await this.cancelItemsSubmitButton.click();
 
     await expect(this.confirmCancellationButton).toBeVisible();
