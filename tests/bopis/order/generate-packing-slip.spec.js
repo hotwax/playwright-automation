@@ -3,7 +3,7 @@ import { PackedOrderPage } from '../pages/orders/pack-orders.page';
 import { PackedDetailPage } from '../pages/order-detail/pack-order-detail.page';
 
 // Case 1: Generate Packing Slip from List Page
-test('Generate Packing Slip from List Page', async ({ page }) => {
+test('Pack Orders Page: Generate Packing Slip', async ({ page }) => {
   await page.goto(process.env.CURRENT_APP_URL);
 
   const packedOrders = new PackedOrderPage(page);
@@ -12,7 +12,7 @@ test('Generate Packing Slip from List Page', async ({ page }) => {
 });
 
 // Case 2: Generate Packing Slip from Detail Page
-test('Generate Packing Slip from Detail Page (Packed Tab)', async ({ page }) => {
+test('Pack Details Page: Generate Packing Slip', async ({ page }) => {
   await page.goto(process.env.CURRENT_APP_URL);
 
   const packedOrders = new PackedOrderPage(page);

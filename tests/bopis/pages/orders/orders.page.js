@@ -4,10 +4,14 @@ export class OrderPage {
 
   constructor(page) {
     this.page = page;
+    // segement button
+    this.openTabButton = page.getByTestId('open-segment-button');
+    this.packedTabButton = page.getByTestId('packed-segment-button');
+    this.completedTabButton = page.getByTestId('completed-segment-button');
+
     // Order Card
     this.orderCard=this.page.getByTestId('order-card');
     this.firstCard = this.orderCard.first();
-    this.orderDetailsPage = page.getByTestId('order-details-page');   
     // Assign picker 
     this.assignPickerModal = page.getByTestId('assign-picker-modal-header');
     this.assignPickerRadios = page.getByTestId('assign-picker-radio');
@@ -25,11 +29,21 @@ export class OrderPage {
     // toast
     this.orderDelivered= page.getByText(`Order delivered to`);
   }
-
-  async verifyDetailPage() {
-    await expect(this.orderDetailsPage).toBeVisible();
+  async goToOpenTab() {
+    await expect(this.openTabButton).toBeVisible();
+    await this.openTabButton.click();
+    await expect(this.firstCard).toBeVisible();
   }
-
+  async goToCompletedTab() {
+    await expect(this.completedTabButton).toBeVisible();
+    await this.completedTabButton.click();
+    await expect(this.firstCard).toBeVisible();
+  }
+  async goToPackedTab() {
+    await expect(this.packedTabButton).toBeVisible();
+    await this.packedTabButton.click();
+    await expect(this.firstCard).toBeVisible();
+  }
   async verifyAssignPickerModal() {
     await expect(this.assignPickerModal).toBeVisible();
   }
@@ -41,7 +55,11 @@ export class OrderPage {
   async getFirstOrderCard() {
     return this.firstCard;
   }
-
+  async clickFirstOrderCard(){
+    const firstCard=await this.getFirstOrderCard()
+    await expect(firstCard).toBeVisible(firstCard);
+    await firstCard.click();
+  }
   async pageGoback(){
     return this.page.goBack();
   }

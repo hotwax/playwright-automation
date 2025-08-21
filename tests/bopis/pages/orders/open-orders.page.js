@@ -1,21 +1,30 @@
 import { expect } from '@playwright/test';
 
-export class OpenListPage {
+export class OpenOrderPage {
 
   constructor(page) {
     this.page = page;
     this.openTabButton = page.getByTestId('open-segment-button');
     this.firstCard = page.getByTestId('order-card').first();
     this.readyForPickupButton = this.firstCard.getByTestId('ready-pickup-button');
-    this.printPicklistbutton=this.page.getByTestId('print-picklist-button').first();
+    this.printPicklistButton=this.page.getByTestId('print-picklist-button').first();
 
     // Dynamic thing
     this.readyForPickupAlertBox = page.locator('ion-alert');
     this.readyForPickupAlertButton=page.getByRole('button',{name:'ready for pickup'});
+    this.rejectionAlertBox = page.locator('ion-alert');
+    this.rejectionAlertButton=page.getByRole('button',{name:'Reject'});
 
     this.assignPickerModal = page.getByTestId('assign-picker-modal-header');
     this.assignPickerRadios = page.getByTestId('assign-picker-radio');
     this.assignPickerSaveButton = page.getByTestId('assign-picker-save-button');
+
+    // Rejection Workflow   reject-order-modal-header
+    this.rejectItemButton = this.firstCard.getByTestId('list-page-reject-button');
+    this.rejectModalHeader= page.getByTestId('reject-order-modal-header');
+    this.rejectionReasonButton = page.getByTestId('rejection-reason-modal-button');
+    this.rejectionReasonOption = page.getByTestId('select-rejection-reason-option');
+    this.submitRejectButton = page.getByTestId('reject-modal-button');
 
     this.orderPackedText = page.getByText('Order packed and ready for delivery');
   }
@@ -28,6 +37,25 @@ export class OpenListPage {
 
   async getFirstOrderCard() {
     return this.firstCard;
+  }
+  async listRejectButton(){
+    await expect(this.rejectItemButton).toBeVisible();
+    await this.rejectItemButton.click();
+  }
+
+  async rejectionModal(){
+    await expect(this.rejectModalHeader).toBeVisible();
+    await expect(this.rejectionReasonButton).toBeVisible();
+    await this.rejectionReasonButton.click();
+    await expect(this.rejectionReasonOption.first()).toBeVisible();
+    await this.rejectionReasonOption.first().click();
+    await this.submitRejectButton.click();
+  }
+
+  async confirmRejectAlert(){
+    await expect(this.rejectionAlertBox).toBeVisible();
+    await expect(this.rejectionAlertButton).toBeVisible();
+    await this.rejectionAlertButton.click();
   }
 
   async markReadyForPickup() {
@@ -47,13 +75,13 @@ export class OpenListPage {
     await this.readyForPickupAlertButton.click();
   }
 
-  async verifyTextExists() {
+  async verifyorderPackedText() {
     await expect(this.orderPackedText).toBeVisible();
   }
   
   async printPicklist(){
-    await expect(this.printPicklistbutton).toBeVisible();
-    await this.printPicklistbutton.click();
+    await expect(this.printPicklistButton).toBeVisible();
+    await this.printPicklistButton.click();
   }
   
   async handlePopupAndVerify() {
