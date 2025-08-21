@@ -13,6 +13,7 @@ export class PackedDetailPage {
     this.handoverConfirmButton = this.page.getByRole('button', { name: 'Handover' });
     
     // Cancellation Workflow Elements
+    this.detailPageIonItems=page.getByTestId("detail-page-ion-items");
     this.cancelItemButton = this.orderDetailsPage.getByTestId('select-cancel-item-button');
     this.cancelItemsSubmitButton = this.orderDetailsPage.getByTestId('submit-cancel-items-button');
     this.cancelReasonButton = this.page.getByTestId('select-cancellation-reason-button');
@@ -59,7 +60,7 @@ export class PackedDetailPage {
 
 
   async cancelOneItemFromMultiple() {
-    const totalItems = await this.cancelItemButton.count();
+    const totalItems = await this.detailPageIonItems.count();
     expect(totalItems).toBeGreaterThan(1);
 
     const firstItem = this.cancelItemButton.first();
@@ -76,7 +77,7 @@ export class PackedDetailPage {
     await this.confirmCancellationButton.click();
 
     // Verify count reduced by one after cancellation
-    await expect(this.cancelItemButton).toHaveCount(totalItems - 1);
+    await expect(this.detailPageIonItems).toHaveCount(totalItems - 1);
   }
 
   async printPackingSlipFromDetail() {
