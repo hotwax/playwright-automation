@@ -22,6 +22,7 @@ export class OpenDetailPage {
     this.readyForPickupAlertButton = page.getByRole('button', { name: 'ready for pickup' });
 
     // Rejection Workflow
+    this.detailPageIonItems=page.getByTestId("detail-page-ion-items");
     this.rejectItemButton = page.getByTestId('select-rejected-item-button');
     this.rejectionReasonButton = page.getByTestId('select-rejection-reason-button');
     this.rejectionReasonChip = page.getByTestId('change-rejection-reason-chip');
@@ -66,7 +67,7 @@ export class OpenDetailPage {
     await this.printPicklistButton.click();
   }
 
-  async verifyOrderRejectMessage(message) {
+  async verifyOrderRejectMessage() {
     await expect(this.orderItemRejection).toBeVisible();
   }
 
@@ -90,7 +91,7 @@ export class OpenDetailPage {
 
   async rejectOneItemFromMultiple() {
 
-    const totalItems = await this.rejectItemButton.count();
+    const totalItems = await this.detailPageIonItems.count();
     expect(totalItems).toBeGreaterThan(1); 
 
     const firstItem = this.rejectItemButton.first();
@@ -104,6 +105,6 @@ export class OpenDetailPage {
     await this.submitRejectionButton.click();
 
     // Verify item count is reduced by 1
-    await expect(this.rejectItemButton).toHaveCount(totalItems - 1);
+    await expect(this.detailPageIonItems).toHaveCount(totalItems - 1);
   }
 }
