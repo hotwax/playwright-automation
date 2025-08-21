@@ -155,4 +155,7 @@ export class OrderPage {
       throw new Error('No input or label found in gift card modal');
     }
   }
+  async bringToFront(){
+    await this.page.bringToFront();
+  }
 }
