@@ -4,7 +4,6 @@ export class CompletedOrdersPage {
   constructor(page) {
     this.page = page;
     // Locators
-    this.orderCard=page.getByTestId('order-card');
     this.completedTabButton = page.getByTestId('completed-segment-button');
     this.orderCards = page.getByTestId('order-card');
     this.giftCardActivationButton = page.getByTestId('gift-card-activation-button');
@@ -26,7 +25,7 @@ export class CompletedOrdersPage {
   }
   
   async findCardByOrderName(orderName) {
-    const matchingCard = this.orderCard.filter({ hasText: orderName }).first();
+    const matchingCard = this.orderCards.filter({ hasText: orderName }).first();
     await expect(matchingCard).toBeVisible();
     return matchingCard;
   }
