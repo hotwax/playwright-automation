@@ -17,7 +17,7 @@ test('Pack Orders Page: Handover', async ({ page }) => {
   await orderPage.verifySuccessToast();
   await completedPage.goToCompletedTab();
   // Assert order exists in completed tab
-  const orderInCompleted = await completedPage.findCardByOrderName(orderName);
+  const orderInCompleted = await orderPage.searchByOrderName(orderName);
   await expect(orderInCompleted).toHaveCount(1);
 });
 
@@ -37,6 +37,6 @@ test(' Packed Details Page: Handover', async ({ page }) => {
   await page.goBack();
   await completedPage.goToCompletedTab();
   // Assert order exists in completed tab
-  const orderInCompleted = await completedPage.findCardByOrderName(orderName);
+  const orderInCompleted = await orderPage.searchByOrderName(orderName);
   await expect(orderInCompleted).toHaveCount(1);
 });

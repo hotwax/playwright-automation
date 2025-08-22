@@ -26,6 +26,7 @@ export class OrderPage {
     this.giftCardActivateButton = page.getByRole('button', { name: 'Activate' });
     this.giftCardActivatedSuccess=this.page.getByText('Gift card activated successfully.');
 
+    this.searchBar=this.page.locator('[data-testid="order-searchbar"] input');
     // toast
     this.orderDelivered= page.getByText(`Order delivered to`);
   }
@@ -158,5 +159,13 @@ export class OrderPage {
   }
   async bringToFront(){
     await this.page.bringToFront();
+  }
+  async searchByOrderName(orderName) {
+    await expect(this.searchBar).toBeVisible();   
+    await this.searchBar.type(orderName);
+    await this.page.keyboard.press('Enter');      
+    const resultCard = this.orderCard.filter({ hasText: orderName }).first();
+    await expect(resultCard).toBeVisible();
+    return resultCard; 
   }
 }
