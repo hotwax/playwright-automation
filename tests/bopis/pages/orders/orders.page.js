@@ -42,7 +42,8 @@ export class OrderPage {
   async goToPackedTab() {
     await expect(this.packedTabButton).toBeVisible();
     await this.packedTabButton.click();
-    await expect(this.firstCard).toBeVisible();
+    const firstPackedCard=this.orderCard.first();
+    await expect(firstPackedCard).toBeVisible();
   }
   async verifyAssignPickerModal() {
     await expect(this.assignPickerModal).toBeVisible();

@@ -5,7 +5,7 @@ export class PackedOrderPage {
     this.page = page;
     this.packedTabButton = page.getByTestId('packed-segment-button');
     this.orderCards = page.getByTestId('order-card');
-    this.firstCard=this.orderCards.first();
+    this.firstCard=page.getByTestId('order-card').first();
     this.giftCardActivationButton=this.page.getByTestId('gift-card-activation-button')
     this.readyForHandoverButton = this.firstCard.getByTestId('handover-button');
     this.printPackingSlipButton = page.getByTestId('packing-slip-button');
@@ -14,7 +14,8 @@ export class PackedOrderPage {
   async goToPackedTab() {
     await expect(this.packedTabButton).toBeVisible();
     await this.packedTabButton.click();
-    await expect(this.firstCard).toBeVisible();
+    const firstPackedCard=this.orderCards.first();
+    await expect(firstPackedCard).toBeVisible();
   }
 
   async getFirstOrderCard() {
