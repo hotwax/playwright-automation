@@ -22,7 +22,7 @@ export class OpenDetailPage {
     this.readyForPickupAlertButton = page.getByRole('button', { name: 'ready for pickup' });
 
     // Rejection Workflow
-    this.detailPageIonItems=page.getByTestId("detail-page-ion-items");
+    this.detailPageIonItems=page.getByTestId("detail-page-item");
     this.rejectItemButton = page.getByTestId('select-rejected-item-button');
     this.rejectionReasonButton = page.getByTestId('select-rejection-reason-button');
     this.rejectionReasonChip = page.getByTestId('change-rejection-reason-chip');

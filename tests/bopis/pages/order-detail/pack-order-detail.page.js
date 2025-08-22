@@ -13,7 +13,7 @@ export class PackedDetailPage {
     this.handoverConfirmButton = this.page.getByRole('button', { name: 'Handover' });
     
     // Cancellation Workflow Elements
-    this.detailPageIonItems=page.getByTestId("detail-page-ion-items");
+    this.detailPageIonItems=page.getByTestId("detail-page-item");
     this.cancelItemButton = this.orderDetailsPage.getByTestId('select-cancel-item-button');
     this.cancelItemsSubmitButton = this.orderDetailsPage.getByTestId('submit-cancel-items-button');
     this.cancelReasonButton = this.page.getByTestId('select-cancellation-reason-button');
