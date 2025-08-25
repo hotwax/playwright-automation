@@ -20,7 +20,7 @@ export class OpenOrderPage {
     this.assignPickerSaveButton = page.getByTestId('assign-picker-save-button');
 
     // Rejection Workflow   reject-order-modal-header
-    this.rejectItemButton = this.firstCard.getByTestId('list-page-reject-button');
+    this.rejectItemButton = this.firstCard.getByTestId('listpage-reject-button');
     this.rejectModalHeader= page.getByTestId('reject-order-modal-header');
     this.rejectionReasonButton = page.getByTestId('rejection-reason-modal-button');
     this.rejectionReasonOption = page.getByTestId('select-rejection-reason-option');

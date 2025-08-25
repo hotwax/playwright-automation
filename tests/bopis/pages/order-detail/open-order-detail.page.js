@@ -73,6 +73,8 @@ export class OpenDetailPage {
 
   // ---------------- REJECTION FLOW ----------------
    async rejectSingleItem() {
+    const totalItems = await this.detailPageIonItems.count();
+    expect(totalItems).toBeLessThan(2);
 
     await expect(this.rejectItemButton.first()).toBeVisible();
     await this.rejectItemButton.first().click();
