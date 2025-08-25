@@ -7,6 +7,8 @@ export class CompletedOrdersPage {
     this.completedTabButton = page.getByTestId('completed-segment-button');
     this.orderCards = page.getByTestId('order-card');
     this.giftCardActivationButton = page.getByTestId('gift-card-activation-button');
+    this.firstCard=page.getByTestId('order-card').first();
+    this.printCustomerLetterButton = page.getByTestId('packing-slip-button');
   }
   async goToCompletedTab() {
     await expect(this.completedTabButton).toBeVisible();
@@ -29,4 +31,16 @@ export class CompletedOrdersPage {
     await expect(matchingCard).toBeVisible();
     return matchingCard;
   }
+
+  async getFirstOrderCard() {
+    return this.orderCards.first();
+  }
+
+  async printCustomerLetter() {
+    const firstCard = await this.getFirstOrderCard();
+    const printCustomerLetterButton = firstCard.getByTestId('packing-slip-button');
+    await expect(printCustomerLetterButton).toBeVisible();
+    await printCustomerLetterButton.click();
+  }
+
 }
