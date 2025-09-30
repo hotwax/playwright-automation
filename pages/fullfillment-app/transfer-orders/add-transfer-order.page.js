@@ -1,5 +1,5 @@
 
-export class TransferOrderDetailsAndAddItemsPage {
+export class addTransferOrderPage {
   constructor(page) {
     this.page = page;
 
@@ -92,7 +92,7 @@ export class TransferOrderDetailsAndAddItemsPage {
   }
 
     // verify that iteam is serached but clicked on cross butoon to closed the modal without hittin button "Add to transfer"
-  async closeModalWithoutAdding(productCode) {
+   async closeModalWithoutAdding(productCode) {
     const viewMoreLink = this.page.getByTestId('view-more-results');
     await expect(viewMoreLink).toBeVisible();
     await viewMoreLink.click();
@@ -115,4 +115,4 @@ export class TransferOrderDetailsAndAddItemsPage {
     await this.discardBtn.click();
   }
 } 
-module.exports = { TransferOrderDetailsAndAddItemsPage };
+module.exports = { addTransferOrderPage };

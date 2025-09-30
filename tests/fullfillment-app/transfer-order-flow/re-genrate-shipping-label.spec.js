@@ -85,7 +85,7 @@ test("should open the create transfer order modal", async ({ page }) => {
   await regenrateLabelBtn.click();
 
   // verify that ship again button is visible and clickable
-  let shipOrderAgainBtn = page.getByTestId("ship-order-btn-again");
+  let shipOrderAgainBtn = page.getByTestId("ship-order-btn");
   await expect(shipOrderAgainBtn).toBeVisible();
   await shipOrderAgainBtn.click();
 });

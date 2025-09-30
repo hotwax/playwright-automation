@@ -1,55 +1,65 @@
-//createTransferOrderPage.js
-//This is the Page Object Model for Create Transfer Order modal
+// createTransferOrderPage.js
+// Page Object Model for the "Create Transfer Order" modal
 
 const { expect } = require('@playwright/test');
 
-class EditTransferOrederDetailsAndAddItemsPage {
+class CreateTransferOrderPage {
   /**
    * @param {import('@playwright/test').Page} page
    */
   constructor(page) {
     this.page = page;
 
-    // Locators for the modal elements
-    this.closeButton = page.getByTestId('create-to-close-modal'); // X button to close modal
-    this.heading = page.locator('text=Create transfer order');   // Heading text
-    this.transferNameInput = page.getByTestId('transfer-name-input'); // Transfer name input field
+    // Locators for modal elements
+    this.closeButton = page.getByTestId('create-transfer-order-close-modal'); // X button
+    this.heading = page.getByText('Create Transfer Order'); // Heading text
+    this.transferNameInput = page.getByTestId('transfer-name-input'); // Transfer name input
     this.facilitySearchInput = page.getByTestId('facility-search-input'); // Facility search field
-    this.facilityRadioOptions = page.getByTestId('facility-radio-options'); // Facility radio buttons
-    this.createTOButton = page.getByTestId('create-transfer-order-btn'); // Floating action button
+    this.facilityRadioOptions = page.getByTestId('facility-radio-options'); // Facility radio list
+    this.noResultsMessage = page.getByText(/No results found/i); // No results message
+    this.saveButton = page.getByTestId('save-transfer-order-btn'); // Floating Save button
   }
 
-  // Method to verify modal is visible
+  // Verify modal is visible
   async verifyModalIsVisible() {
-    await expect(this.heading).toBeVisible(); // Check heading is visible
-    await expect(this.transferNameInput).toBeVisible(); // Check input field is visible
+    await expect(this.heading).toBeVisible();
+    await expect(this.transferNameInput).toBeVisible();
   }
 
-  // Method to close the modal
+  // Close modal
   async closeModal() {
+    await expect(this.closeButton).toBeVisible();
     await this.closeButton.click();
   }
 
-  // Method to enter transfer name
+  // Enter transfer name
   async enterTransferName(name) {
-    await this.transferNameInput.fill(name); // Fill input with provided name
+    await this.transferNameInput.fill(name);
   }
 
-  // Method to search facility
+  // Search for a facility
   async searchFacility(facilityName) {
-    await this.facilitySearchInput.fill(facilityName); // Fill search field
-    // Optional: you can wait for results to appear or "No results found"
-    await this.page.waitForTimeout(500); // Wait briefly for results to appear
+    await this.facilitySearchInput.fill(facilityName);
+    await this.facilitySearchInput.press('Enter');
   }
 
-  // Method to select first available facility
+  // Select the first facility
   async selectFirstFacility() {
-    await this.facilityRadioOptions.first().click(); // Select the first facility from list
+    await expect(this.facilityRadioOptions.first()).toBeVisible();
+    await this.facilityRadioOptions.first().click();
+    await expect(this.facilityRadioOptions.first()).toBeChecked();
   }
 
-  // Method to click Create Transfer Order button
-  async clickCreateTO() {
-    await this.createTOButton.click(); // Click on the blue button
+  // Verify "No results found" message
+  async verifyNoResultsMessage() {
+    await expect(this.noResultsMessage).toBeVisible();
+  }
+
+  // Save and create transfer order
+  async clickSave() {
+    await expect(this.saveButton).toBeVisible();
+    await this.saveButton.click();
   }
 }
-module.exports = { EditTransferOrederDetailsAndAddItemsPage };
+
+module.exports = { CreateTransferOrderPage };
