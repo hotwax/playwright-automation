@@ -1,47 +1,74 @@
-export class TransferOrderDetailsAndAddItemsPage {
+// pages/TransferOrderDetailsPage.js
+import { expect } from '@playwright/test';
+
+export class TransferOrderDetailsPage {
   constructor(page) {
     this.page = page;
 
-    // Locators
+    // -------------------------
+    // Edit order name
+    // -------------------------
     this.orderEditBtn = page.getByTestId('order-name-edit-btn');
-    this.orderNameInput = page.getByTestId('edited-order-name-input');
-    this.saveOrderNameBtn = page.getByTestId('save-ediited-transfer-order-name-btn');
+    this.editedOrderNameInput = page.getByTestId('edited-order-name-input');
+    this.saveEditedOrderNameBtn = page.getByTestId('save-edited-transfer-order-name-btn');
+    this.cancelEditedOrderNameBtn = page.getByTestId('cancel-editting-transfer-order-name-btn');
 
+    // -------------------------
+    // Edit store name modal
+    // -------------------------
     this.storeEditBtn = page.getByTestId('store-name-edit-btn');
-    this.firstFacility = page.getByTestId('facility-radio-option').first();
+    this.updateFacilityRadioOptions = page.getByTestId('update-facility-radio-options');
     this.saveStoreBtn = page.getByTestId('update-store-name-transfer-order-btn');
-  
-}
-// Navigate to a specific transfer order by ID
- async goto(orderId) {
-    await this.page.goto(`https://fulfillment-dev.hotwax.io/transfer-orders/${orderId}`);
+    this.closeStoreModalBtn = page.getByTestId('update-store-name-close-modal-btn');
   }
-  // Edit the order name
+
+  // Methods for Order Name
   async editOrderName(newName) {
     await expect(this.orderEditBtn).toBeVisible();
     await this.orderEditBtn.click();
 
-    await expect(this.orderNameInput).toBeVisible();
-    await this.orderNameInput.fill(newName);
-    await this.saveOrderNameBtn.click();
+    await expect(this.editedOrderNameInput).toBeVisible();
+    await this.editedOrderNameInput.fill(newName);
 
-    await expect(this.orderNameInput).not.toBeVisible();
+    await expect(this.saveEditedOrderNameBtn).toBeVisible();
+    await this.saveEditedOrderNameBtn.click();
+
+    await expect(this.editedOrderNameInput).not.toBeVisible();
     await expect(this.page.getByText(newName)).toBeVisible();
   }
- // Edit the store/facility
-  async editStore(expectedStoreName = 'Updated Store Name') {
+
+  async cancelEditOrderName() {
+    await expect(this.orderEditBtn).toBeVisible();
+    await this.orderEditBtn.click();
+
+    await expect(this.cancelEditedOrderNameBtn).toBeVisible();
+    await this.cancelEditedOrderNameBtn.click();
+
+    await expect(this.editedOrderNameInput).not.toBeVisible();
+  }
+  // Methods for Store / Facility
+  
+  async openEditStoreModal() {
     await expect(this.storeEditBtn).toBeVisible();
     await this.storeEditBtn.click();
+  }
 
-    await expect(this.page.getByText(/Select facility|Select Store/)).toBeVisible();
-
-    await expect(this.firstFacility).toBeVisible();
-    await this.firstFacility.click();
-    await expect(this.firstFacility).toBeChecked();
+  async selectFirstFacilityAndSave(expectedStoreName = null) {
+    await expect(this.updateFacilityRadioOptions.first()).toBeVisible();
+    await this.updateFacilityRadioOptions.first().click();
+    await expect(this.updateFacilityRadioOptions.first()).toBeChecked();
 
     await expect(this.saveStoreBtn).toBeVisible();
     await this.saveStoreBtn.click();
 
-    await expect(this.page.getByText(expectedStoreNameStoreName)).toBeVisible();
+    if (expectedStoreName) {
+      await expect(this.page.getByText(expectedStoreName)).toBeVisible();
+    }
+  }
+
+  async closeStoreModal() {
+    await expect(this.closeStoreModalBtn).toBeVisible();
+    await this.closeStoreModalBtn.click();
+    await expect(this.closeStoreModalBtn).not.toBeVisible();
   }
 }
