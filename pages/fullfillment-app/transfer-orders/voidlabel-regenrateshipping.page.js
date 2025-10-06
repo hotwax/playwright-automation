@@ -23,14 +23,15 @@ export class TransferOrderPage {
     this.shipTransferOrderHeading = page.getByText("Ship transfer order");
   }
 
-  /** Navigate to Transfer Orders page */
+  // Navigate to Transfer Orders page
   async goto() {
     await this.page.goto(
-      process.env.LOGIN_URL || "https://fulfillment-dev.hotwax.io/transfer-orders"
+      process.env.LOGIN_URL ||
+        "https://fulfillment-dev.hotwax.io/transfer-orders",
     );
   }
 
-  // --------- VOID LABEL FLOW ---------
+  //  VOID LABEL FLOW
   async verifyVoidLabelButton() {
     await expect(this.voidLabelButton).toBeVisible();
   }

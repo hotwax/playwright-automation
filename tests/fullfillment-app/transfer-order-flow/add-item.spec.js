@@ -1,28 +1,38 @@
 import { test, expect } from "@playwright/test";
+import CreateTransferOrderPage from "../../pages/fullfillment-app/transfer-orders/create-order.page.js";
 
-test("Add item to Transfer Order and update qty", async ({ page }) => {
-  await page.goto(
-    "https://fulfillment-dev.hotwax.io/transfer-orders/<ORDER_ID>",
-  );
+test("Transfer Order - Search and add multiple products", async ({ page }) => {
+  const TOPage = new AddTransferOrderPage(page);
 
-  //verify that we are on the correct page.
-  await expect(page.getByText("Create transfer order")).toBeVisible();
+  // --------------------
+  // Step 1: Go to a specific transfer order page
+  // --------------------
+  const orderId = "12345"; // Replace with a real order ID
+  await TOPage.goto(orderId);
 
-  // Search for product and add to transfer order.
-  const searchInput = page.getByTestId("search-product-input");
-  await expect(searchInput).toBeVisible();
-  await searchInput.fill("MH01-XS-Orange");
-  await searchInput.press("Enter"); // pressing Enter key to search.
+  // --------------------
+  // Step 2: Search and add products on main page
+  // --------------------
+  await TOPage.searchAndAddProduct("MH01-XS-Orange"); // Product 1
+  await TOPage.searchAndAddProduct("MH01-S-Red"); // Product 2
 
-  await expect(page.getByText("MH01-XS-Orange")).toBeVisible(); // Verify product appears in search results.
+  // --------------------
+  // Step 3: Search and add products using View More modal
+  // --------------------
+  await TOPage.viewMoreAndAddProduct("MH01-XS-Blue"); // Product 3
+  await TOPage.viewMoreAndAddProduct("MH01-M-Green"); // Product 4
 
-  const addToTransferBtn = page.getByTestId("Add-to-transfer-btn").first();
-  // Select the first matching button.
-  await expect(addToTransferBtn).toBeVisible();
-  await addToTransferBtn.click();
+  // --------------------
+  // Step 4: Verify all added products appear in the transfer order
+  // --------------------
+  const addedProducts = [
+    "MH01-XS-Orange",
+    "MH01-S-Red",
+    "MH01-XS-Blue",
+    "MH01-M-Green",
+  ];
 
-  const itemQtyInput = page.getByTestId("qty-input").first();
-  await expect(itemQtyInput).toBeVisible();
-  await itemQtyInput.fill("101");
-  await expect(itemQtyInput).toHaveValue("101");
+  for (const productCode of addedProducts) {
+    await expect(page.getByText(productCode)).toBeVisible();
+  }
 });

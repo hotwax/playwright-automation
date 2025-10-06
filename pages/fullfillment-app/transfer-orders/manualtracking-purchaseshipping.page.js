@@ -14,10 +14,14 @@ export class ShippingPage {
 
     // Manual tracking elements
     this.carrierDropdown = page.getByTestId("select-carrier-dropdown");
-    this.carrierOption = page.getByTestId("select-carrier-dropdown-option").first();
+    this.carrierOption = page
+      .getByTestId("select-carrier-dropdown-option")
+      .first();
     this.trackingInput = page.getByTestId("tracking-code-input");
     this.methodDropdown = page.getByTestId("select-method-dropdown");
-    this.methodOption = page.getByTestId("select-method-dropdown-option").first();
+    this.methodOption = page
+      .getByTestId("select-method-dropdown-option")
+      .first();
     this.trackingTestLink = page.getByTestId("tracking-test-link");
     this.shipOrderButton = page.getByTestId("ship-order-btn");
 
@@ -38,7 +42,11 @@ export class ShippingPage {
     await this.manualTrackingTab.click();
   }
 
-  async fillManualTrackingDetails(carrier = null, trackingNumber = "1234567890", method = null) {
+  async fillManualTrackingDetails(
+    carrier = null,
+    trackingNumber = "1234567890",
+    method = null,
+  ) {
     // Select carrier
     await expect(this.carrierDropdown).toBeVisible();
     await this.carrierDropdown.click();

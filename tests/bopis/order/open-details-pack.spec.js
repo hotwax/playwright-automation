@@ -1,12 +1,13 @@
-import { test } from '@playwright/test';
-import { OpenDetailPage } from '../pages/order-detail/open-order-detail.page';
-import { OrderPage } from '../pages/orders/orders.page';
+import { test } from "@playwright/test";
+import { OpenDetailPage } from "../pages/order-detail/open-order-detail.page";
+import { OrderPage } from "../pages/orders/orders.page";
 
 // Packed order from Open detail page by Assigning the Picker when the Enable Tracking is on
-test('Open Details Page: Pack Order When Tracking Enabled', async ({ page }) => {
-  
+test("Open Details Page: Pack Order When Tracking Enabled", async ({
+  page,
+}) => {
   const packOpenOrder = new OpenDetailPage(page);
-  const orderPage=new OrderPage(page);
+  const orderPage = new OrderPage(page);
   await page.goto(process.env.CURRENT_APP_URL);
   await orderPage.goToOpenTab();
   await orderPage.clickFirstOrderCard();
@@ -15,13 +16,14 @@ test('Open Details Page: Pack Order When Tracking Enabled', async ({ page }) => 
   await packOpenOrder.assignPickerAndSave(1);
   // verify that success label are now visible
   await packOpenOrder.verifyOrderPackedMessage();
-
-})
+});
 
 // Packed order from Open detail page when the Enable Tracking is off
-test('Open Details Page: Pack Order When Tracking Disabled', async ({ page }) => {
+test("Open Details Page: Pack Order When Tracking Disabled", async ({
+  page,
+}) => {
   const packOpenOrder = new OpenDetailPage(page);
-  const orderPage=new OrderPage(page);
+  const orderPage = new OrderPage(page);
   await page.goto(process.env.CURRENT_APP_URL);
   await orderPage.goToOpenTab();
   await orderPage.clickFirstOrderCard();
@@ -30,5 +32,4 @@ test('Open Details Page: Pack Order When Tracking Disabled', async ({ page }) =>
   await packOpenOrder.confirmReadyPickupAlert();
   // verify that success label are now visible
   await packOpenOrder.verifyOrderPackedMessage();
-
-})
+});

@@ -1,9 +1,9 @@
-import { test } from '@playwright/test';
-import { PackedOrderPage } from '../pages/orders/pack-orders.page';
-import { PackedDetailPage } from '../pages/order-detail/pack-order-detail.page';
+import { test } from "@playwright/test";
+import { PackedOrderPage } from "../pages/orders/pack-orders.page";
+import { PackedDetailPage } from "../pages/order-detail/pack-order-detail.page";
 
 // Case 1: Generate Packing Slip from List Page
-test('Pack Orders Page: Generate Packing Slip', async ({ page }) => {
+test("Pack Orders Page: Generate Packing Slip", async ({ page }) => {
   await page.goto(process.env.CURRENT_APP_URL);
 
   const packedOrders = new PackedOrderPage(page);
@@ -12,7 +12,7 @@ test('Pack Orders Page: Generate Packing Slip', async ({ page }) => {
 });
 
 // Case 2: Generate Packing Slip from Detail Page
-test('Pack Details Page: Generate Packing Slip', async ({ page }) => {
+test("Pack Details Page: Generate Packing Slip", async ({ page }) => {
   await page.goto(process.env.CURRENT_APP_URL);
 
   const packedOrders = new PackedOrderPage(page);

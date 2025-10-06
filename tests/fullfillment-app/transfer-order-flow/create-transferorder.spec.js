@@ -1,47 +1,86 @@
+// tests/create-transfer-order.spec.js
 import { test, expect } from "@playwright/test";
+import { CreateTransferOrderPage } from "../pages/createTransferOrderPage";
 
-test("should open the create transfer order modal", async ({ page }) => {
-  // Go to Transfer Orders page directly inside the test
-  await page.goto(
-    process.env.LOGIN_URL ||
-      "https://fulfillment-dev.hotwax.io/transfer-orders",
-  );
+test.describe("Create Transfer Order Modal Tests", () => {
+  test.beforeEach(async ({ page }) => {
+    // Go to Transfer Orders page
+    await page.goto(
+      process.env.LOGIN_URL ||
+        "https://fulfillment-dev.hotwax.io/transfer-orders",
+    );
+  });
 
-  // finding a create Trabsfer order button to open moda, Locate + button and click
-  let createButton = page.getByTestId("create-transfer-order-btn");
-  await expect(createButton).toBeVisible();
-  await createButton.click();
+  test("should open the Create Transfer Order modal and create an order", async ({
+    page,
+  }) => {
+    const createTO = new CreateTransferOrderPage(page);
 
-  // Verify modal heading is create Tranfer order.
-  let modalHeading = page.getByText("Create transfer order");
-  await expect(modalHeading).toBeVisible();
+    // Verify create transfer order button is visible and open modal
+    await createTO.verifyCreateTransferOrderButton();
+    await createTO.clickCreateTransferOrderButton();
 
-  // Verify by enter transfer name
-  let transferNameInput = page.getByTestId("transfer-name-input");
-  await transferNameInput.fill("Playwright TO 001");
+    // Verify modal elements
+    await createTO.verifyModalIsVisible();
 
-  //verify search is working or not
-  let serachInput = page.getByTestId("facility-search-input");
-  await serachInput.fill("Central Warehouse");
-  await searchInput.press("Enter"); //hitting Enter key
+    // Enter transfer name
+    await createTO.enterTransferName("Playwright TO 001");
 
-  // verify by selecting first facility option
-  let firstOption = page.getByTestId("facility-radio-options").first();
-  await firstOption.click();
+    // Search and select facility
+    await createTO.searchFacility("Central Warehouse");
+    await createTO.facilitySearchInput.press("Enter");
+    await createTO.selectFirstFacility();
+    // Optionally verify selection
+    const selectedFacility = createTO.facilityRadioOptions.first();
+    await expect(selectedFacility).toBeChecked();
 
-  // Verify that modal closed after sucessfull creation of order (heading no longer visible)
-  await expect(page.getByText("Create transfer order")).not.toBeVisible();
-  // verify that back button is visible
-  await expect(
-    page.getByTestId("create-transfer-orders-back-btn"),
-  ).toBeVisible();
+    // Save and verify modal closed
+    await createTO
+      .saveTransferOrderButton("save-transfer-order-btn")
+      .toBeVisible();
+    await createTO.clickSave();
+    await expect(page.getByText("Create Transfer Order")).not.toBeVisible();
+  });
 
-  //verify that ship later button is disabled when no items are added.
-  let shiplaterbutton = page.getByTestId("ship-later-btn-disabled");
-  await expect(shiplaterbutton).toBeVisible();
-  await expect(shiplaterbutton).toBeDisabled();
-  // verify that pack and ship button is disabled when no items are added.
-  let packandshipbutton = page.getByTestId("pack-and-ship-btn-disabled");
-  await expect(packandshipbutton).toBeVisible();
-  await expect(packandshipbutton).toBeDisabled();
+  // Close modal test.
+  test("should close the modal when X button is clicked", async ({ page }) => {
+    const createTO = new CreateTransferOrderPage(page);
+
+    await createTO.clickCreateTransferOrderButton();
+    await createTO.verifyModalIsVisible();
+
+    await createTO.closeModal();
+
+    // Verify modal is closed
+    await expect(page.getByText("Create Transfer Order")).not.toBeVisible();
+  });
+
+  test("should show 'No results found' for invalid facility search", async ({
+    page,
+  }) => {
+    const createTO = new CreateTransferOrderPage(page);
+
+    await createTO.clickCreateTransferOrderButton();
+    await createTO.verifyModalIsVisible();
+
+    // Search with invalid name
+    await createTO.searchFacility("InvalidFacilityXYZ");
+    await createTO.verifyNoResultsMessage();
+  });
+
+  test("should validate empty transfer name cannot be saved", async ({
+    page,
+  }) => {
+    const createTO = new CreateTransferOrderPage(page);
+
+    await createTO.clickCreateTransferOrderButton();
+    await createTO.verifyModalIsVisible();
+
+    // Try saving without entering name
+    await createTO.clickSave();
+
+    // Verify some validation or disabled save
+    const validationError = page.getByText(/transfer name/i);
+    await expect(validationError).toBeVisible();
+  });
 });

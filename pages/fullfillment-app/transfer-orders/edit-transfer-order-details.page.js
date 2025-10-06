@@ -1,5 +1,5 @@
 // pages/TransferOrderDetailsPage.js
-import { expect } from '@playwright/test';
+import { expect } from "@playwright/test";
 
 export class TransferOrderDetailsPage {
   constructor(page) {
@@ -8,18 +8,28 @@ export class TransferOrderDetailsPage {
     // -------------------------
     // Edit order name
     // -------------------------
-    this.orderEditBtn = page.getByTestId('order-name-edit-btn');
-    this.editedOrderNameInput = page.getByTestId('edited-order-name-input');
-    this.saveEditedOrderNameBtn = page.getByTestId('save-edited-transfer-order-name-btn');
-    this.cancelEditedOrderNameBtn = page.getByTestId('cancel-editting-transfer-order-name-btn');
+    this.orderEditBtn = page.getByTestId("order-name-edit-btn");
+    this.editedOrderNameInput = page.getByTestId("edited-order-name-input");
+    this.saveEditedOrderNameBtn = page.getByTestId(
+      "save-edited-transfer-order-name-btn",
+    );
+    this.cancelEditedOrderNameBtn = page.getByTestId(
+      "cancel-editting-transfer-order-name-btn",
+    );
 
     // -------------------------
     // Edit store name modal
     // -------------------------
-    this.storeEditBtn = page.getByTestId('store-name-edit-btn');
-    this.updateFacilityRadioOptions = page.getByTestId('update-facility-radio-options');
-    this.saveStoreBtn = page.getByTestId('update-store-name-transfer-order-btn');
-    this.closeStoreModalBtn = page.getByTestId('update-store-name-close-modal-btn');
+    this.storeEditBtn = page.getByTestId("store-name-edit-btn");
+    this.updateFacilityRadioOptions = page.getByTestId(
+      "update-facility-radio-options",
+    );
+    this.saveStoreBtn = page.getByTestId(
+      "update-store-name-transfer-order-btn",
+    );
+    this.closeStoreModalBtn = page.getByTestId(
+      "update-store-name-close-modal-btn",
+    );
   }
 
   // Methods for Order Name
@@ -47,7 +57,7 @@ export class TransferOrderDetailsPage {
     await expect(this.editedOrderNameInput).not.toBeVisible();
   }
   // Methods for Store / Facility
-  
+
   async openEditStoreModal() {
     await expect(this.storeEditBtn).toBeVisible();
     await this.storeEditBtn.click();
