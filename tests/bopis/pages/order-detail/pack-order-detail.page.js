@@ -1,29 +1,45 @@
-import { expect } from '@playwright/test';
+import { expect } from "@playwright/test";
 
 export class PackedDetailPage {
   constructor(page) {
     this.page = page;
-    this.orderDetailsPage = this.page.getByTestId('order-details-page');
+    this.orderDetailsPage = this.page.getByTestId("order-details-page");
 
     // Handover button and related elements
-    this.handoverButton = this.orderDetailsPage.getByTestId('handover-button');
-    this.handedOverSuccessLabel = this.orderDetailsPage.getByTestId('handed-over-success-label');
-    
-    this.handoverAlert = page.locator('ion-alert'); 
-    this.handoverConfirmButton = this.page.getByRole('button', { name: 'Handover' });
-    
+    this.handoverButton = this.orderDetailsPage.getByTestId("handover-button");
+    this.handedOverSuccessLabel = this.orderDetailsPage.getByTestId(
+      "handed-over-success-label",
+    );
+
+    this.handoverAlert = page.locator("ion-alert");
+    this.handoverConfirmButton = this.page.getByRole("button", {
+      name: "Handover",
+    });
+
     // Cancellation Workflow Elements
-    this.detailPageIonItems=page.getByTestId("detail-page-item");
-    this.cancelItemButton = this.orderDetailsPage.getByTestId('select-cancel-item-button');
-    this.cancelItemsSubmitButton = this.orderDetailsPage.getByTestId('submit-cancel-items-button');
-    this.cancelReasonButton = this.page.getByTestId('select-cancellation-reason-button');
-    this.cancelReasonChip = this.page.getByTestId('change-cancel-reason-chip');
-    this.confirmCancellationButton = this.page.getByTestId('confirm-cancellation-button');
+    this.detailPageIonItems = page.getByTestId("detail-page-item");
+    this.cancelItemButton = this.orderDetailsPage.getByTestId(
+      "select-cancel-item-button",
+    );
+    this.cancelItemsSubmitButton = this.orderDetailsPage.getByTestId(
+      "submit-cancel-items-button",
+    );
+    this.cancelReasonButton = this.page.getByTestId(
+      "select-cancellation-reason-button",
+    );
+    this.cancelReasonChip = this.page.getByTestId("change-cancel-reason-chip");
+    this.confirmCancellationButton = this.page.getByTestId(
+      "confirm-cancellation-button",
+    );
 
     // Packing slip button for printing
-    this.packingSlipButton = this.orderDetailsPage.getByTestId('packing-slip-button');
-    
-    this.orderRejectedsuccess=this.page.getByText('All order items are cancelled')
+    this.packingSlipButton = this.orderDetailsPage.getByTestId(
+      "packing-slip-button",
+    );
+
+    this.orderRejectedsuccess = this.page.getByText(
+      "All order items are cancelled",
+    );
   }
 
   async verifyDetailPageVisible() {
@@ -41,7 +57,6 @@ export class PackedDetailPage {
     await expect(this.handedOverSuccessLabel).toBeVisible();
   }
 
-
   async cancelSingleItem() {
     await expect(this.cancelItemButton.first()).toBeVisible();
     await this.cancelItemButton.first().click();
@@ -57,7 +72,6 @@ export class PackedDetailPage {
     // verify the order rejected success
     await expect(this.orderRejectedsuccess).toBeVisible();
   }
-
 
   async cancelOneItemFromMultiple() {
     const totalItems = await this.detailPageIonItems.count();
@@ -83,11 +97,11 @@ export class PackedDetailPage {
   async printPackingSlipFromDetail() {
     await expect(this.packingSlipButton).toBeVisible();
     const [popup] = await Promise.all([
-      this.page.waitForEvent('popup'),
+      this.page.waitForEvent("popup"),
       this.packingSlipButton.click(),
     ]);
     const url = popup.url();
     expect(url).toMatch(/(blob|pdf)/);
     console.log(`Packing slip opeed in new tab: ${url}`);
   }
-};
+}

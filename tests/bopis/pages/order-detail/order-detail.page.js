@@ -1,29 +1,38 @@
-import { expect } from '@playwright/test';
+import { expect } from "@playwright/test";
 
 export class OrderDetailPage {
-  
   constructor(page) {
     this.page = page;
 
-    this.orderDetailsPage = page.getByTestId('order-details-page');
-    this.orderNameTag = this.orderDetailsPage.getByTestId('order-name-tag');
+    this.orderDetailsPage = page.getByTestId("order-details-page");
+    this.orderNameTag = this.orderDetailsPage.getByTestId("order-name-tag");
 
-    this.editPickerChip = this.orderDetailsPage.getByTestId('edit-picker-chip');
-    this.editPickerModalHeader = page.getByTestId('edit-picker-modal-header');
-    this.editPickerRadios = page.getByTestId('edit-picker-radio');
-    this.editPickerSaveButton = page.getByTestId('edit-picker-save-button');
-    this.replaceButton = page.getByRole('button', { name: 'Replace' });
+    this.editPickerChip = this.orderDetailsPage.getByTestId("edit-picker-chip");
+    this.editPickerModalHeader = page.getByTestId("edit-picker-modal-header");
+    this.editPickerRadios = page.getByTestId("edit-picker-radio");
+    this.editPickerSaveButton = page.getByTestId("edit-picker-save-button");
+    this.replaceButton = page.getByRole("button", { name: "Replace" });
 
     // Gift Card Elements
-    this.giftCardActivationButton = this.orderDetailsPage.getByTestId('gift-card-activation-button');
-    this.giftCardModal = page.getByTestId('giftcard-activation-modal-header');
-    this.giftCardInput = page.getByTestId('giftcard-activation-input');
-    this.giftCardLabel = page.getByTestId('giftcard-activation-label');
-    this.giftCardSaveButton = page.getByTestId('giftcard-activation-save-button');
-    this.giftCardCloseButton = page.getByTestId('giftcard-activation-close-button');
-    this.giftCardActivateButton = page.getByRole('button', { name: 'Activate' });
+    this.giftCardActivationButton = this.orderDetailsPage.getByTestId(
+      "gift-card-activation-button",
+    );
+    this.giftCardModal = page.getByTestId("giftcard-activation-modal-header");
+    this.giftCardInput = page.getByTestId("giftcard-activation-input");
+    this.giftCardLabel = page.getByTestId("giftcard-activation-label");
+    this.giftCardSaveButton = page.getByTestId(
+      "giftcard-activation-save-button",
+    );
+    this.giftCardCloseButton = page.getByTestId(
+      "giftcard-activation-close-button",
+    );
+    this.giftCardActivateButton = page.getByRole("button", {
+      name: "Activate",
+    });
 
-    this.replacedPickerSuccess=this.page.getByText('Pickers successfully replaced in the picklist with the new selections.')
+    this.replacedPickerSuccess = this.page.getByText(
+      "Pickers successfully replaced in the picklist with the new selections.",
+    );
   }
 
   async verifyDetailPage() {
@@ -33,7 +42,7 @@ export class OrderDetailPage {
   async getOrderName() {
     await expect(this.orderNameTag).toBeVisible();
     const text = await this.orderNameTag.textContent();
-    if (!text) throw new Error('Order name not found');
+    if (!text) throw new Error("Order name not found");
     return text.trim();
   }
 
@@ -45,7 +54,7 @@ export class OrderDetailPage {
 
   async selectDifferentPicker() {
     const selectedIndex = await this.editPickerRadios.evaluateAll((radios) => {
-      return radios.findIndex(radio => !radio.checked);
+      return radios.findIndex((radio) => !radio.checked);
     });
     await expect(this.editPickerRadios.nth(selectedIndex)).toBeVisible();
     await this.editPickerRadios.nth(selectedIndex).click();
@@ -62,14 +71,14 @@ export class OrderDetailPage {
   }
 
   async handlePopupAndVerify() {
-    const popupPromise = this.page.waitForEvent('popup').catch(() => null);
+    const popupPromise = this.page.waitForEvent("popup").catch(() => null);
     const result = await Promise.race([popupPromise]);
     if (result && result.url()) {
       const url = result.url();
       expect(url).toMatch(/(blob|pdf)/);
       console.log(`Blob/PDF URL opened: ${url}`);
     } else {
-      throw new Error('No blob/pdf detected after clicking.');
+      throw new Error("No blob/pdf detected after clicking.");
     }
   }
   // Gift Card Flows
@@ -79,20 +88,28 @@ export class OrderDetailPage {
     await expect(this.giftCardModal).toBeVisible();
   }
 
-  async activateGiftCard(code = 'mygiftcard123') {
+  async activateGiftCard(code = "mygiftcard123") {
     await Promise.race([
-    this.giftCardInput.first()
-      .waitFor({ state: 'visible', timeout: 2000 })
-      .catch((err) => {
-        console.warn('Giftcard input not visible within timeout:', err.message);
-      }),
-    this.giftCardLabel.first()
-      .waitFor({ state: 'visible', timeout: 2000 })
-      .catch((err) => {
-        console.warn('Giftcard label not visible within timeout:', err.message);
-      })
+      this.giftCardInput
+        .first()
+        .waitFor({ state: "visible", timeout: 2000 })
+        .catch((err) => {
+          console.warn(
+            "Giftcard input not visible within timeout:",
+            err.message,
+          );
+        }),
+      this.giftCardLabel
+        .first()
+        .waitFor({ state: "visible", timeout: 2000 })
+        .catch((err) => {
+          console.warn(
+            "Giftcard label not visible within timeout:",
+            err.message,
+          );
+        }),
     ]);
-    
+
     const hasInput = await this.giftCardInput.isVisible();
     const hasLabel = await this.giftCardLabel.isVisible();
 
@@ -108,16 +125,17 @@ export class OrderDetailPage {
       await expect(this.giftCardActivateButton).toBeVisible();
       await this.giftCardActivateButton.click();
 
-      await expect(this.page.getByText('Gift card activated successfully.')).toBeVisible();
+      await expect(
+        this.page.getByText("Gift card activated successfully."),
+      ).toBeVisible();
     } else if (hasLabel) {
       await expect(this.giftCardCloseButton).toBeVisible();
       await this.giftCardCloseButton.click();
     } else {
-      throw new Error('No input or label found in gift card modal');
+      throw new Error("No input or label found in gift card modal");
     }
   }
-  async bringToFront(){
+  async bringToFront() {
     await this.page.bringToFront();
   }
-  
 }
