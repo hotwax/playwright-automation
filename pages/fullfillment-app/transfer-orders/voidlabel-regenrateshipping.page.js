@@ -1,10 +1,6 @@
-// pages/transferOrderPage.js
 import { expect } from "@playwright/test";
 
 export class TransferOrderPage {
-  /**
-   * @param {import('@playwright/test').Page} page
-   */
   constructor(page) {
     this.page = page;
 
@@ -27,11 +23,11 @@ export class TransferOrderPage {
   async goto() {
     await this.page.goto(
       process.env.LOGIN_URL ||
-        "https://fulfillment-dev.hotwax.io/transfer-orders",
+        "https://fulfillment-dev.hotwax.io/transfer-orders"
     );
   }
 
-  //  VOID LABEL FLOW
+  // --------- VOID LABEL FLOW ---------
   async verifyVoidLabelButton() {
     await expect(this.voidLabelButton).toBeVisible();
   }

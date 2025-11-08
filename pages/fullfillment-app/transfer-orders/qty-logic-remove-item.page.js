@@ -1,54 +1,33 @@
 import { expect } from "@playwright/test";
 
-export class TransferOrderDetailsPage {
+export class TransferOrderQtyPage {
   constructor(page) {
     this.page = page;
 
-    // locators
-    this.searchInput = page.getByTestId("search-product-input");
-    this.addToTransferBtn = page.getByTestId("Add-to-transfer-btn").first();
-    this.itemQtyInput = page.getByTestId("qty-input").nth(0);
-    this.bookQOHBtn = page.getByTestId("book-qoh-btn").nth(0);
-    this.removeItemBtn = page.getByTestId("remove-item-btn").nth(0);
+    // locators related to quantity
+    this.qtyInput = page.getByTestId("qty-input").first();
+    this.bookQOHBtn = page.getByTestId("book-qoh-btn").first();
+    this.removeItemBtn = page.getByTestId("remove-item-btn").first();
   }
 
-  async goto(orderId) {
-    await this.page.goto(
-      `https://fulfillment-dev.hotwax.io/transfer-orders/${orderId}`,
-    );
-  }
-
-  // verify item can be searched and added to transfer order
-  async searchAndAddItem(productCode) {
-    await expect(this.searchInput).toBeVisible();
-    await this.searchInput.fill(productCode);
-    await this.searchInput.press("Enter");
-    await expect(this.page.getByText(productCode)).toBeVisible();
-
-    await expect(this.addToTransferBtn).toBeVisible();
-    await this.addToTransferBtn.click();
-
-    await expect(this.itemQtyInput).toBeVisible();
-  }
-  // set a custom qty for the item.
+  // Set a custom quantity for the item
   async setCustomQty(qty) {
-    await this.itemQtyInput.fill(qty.toString());
-    await expect(this.itemQtyInput).toHaveValue(qty.toString());
+    await this.qtyInput.fill(qty.toString());
+    return this.qtyInput; // return element for assertion in test
   }
 
+ //Click Book QOH and return the new system-assigned quantity
+  
   async bookQOH() {
-    await expect(this.bookQOHBtn).toBeVisible();
     await this.bookQOHBtn.click();
-
-    const qohValue = await this.itemQtyInput.inputValue();
-    return qohValue; // new system-assigned qty
+    const qohValue = await this.qtyInput.inputValue();
+    return qohValue;
   }
+   //Remove the item from the order
 
-  async removeItem(productCode) {
-    await expect(this.removeItemBtn).toBeVisible();
+  async removeItem() {
     await this.removeItemBtn.click();
-
-    // verify item is gone from list
-    await expect(this.page.getByText(productCode)).not.toBeVisible();
   }
 }
+
+  

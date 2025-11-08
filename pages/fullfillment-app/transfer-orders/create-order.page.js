@@ -5,6 +5,7 @@ class CreateTransferOrderPage {
   constructor(page) {
     this.page = page;
     this.closeButton = page.getByTestId("create-transfer-order-close-modal");
+    this.transferOrderLink = page.getByText('Transfer Orders').click();
     this.heading = page.getByText("Create Transfer Order");
     this.transferNameInput = page.getByTestId("transfer-name-input");
     this.facilitySearchInput = page.getByTestId("facility-search-input");
@@ -15,6 +16,10 @@ class CreateTransferOrderPage {
       "create-transfer-order-btn",
     );
   }
+
+async clickOnTransferOrderLink(){
+  await this.transferOrderLink.click();
+}
 
   async verifyCreateTransferOrderButton() {
     await expect(this.createTransferOrderButton).toBeVisible();

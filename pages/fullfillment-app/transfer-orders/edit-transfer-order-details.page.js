@@ -1,84 +1,56 @@
-// pages/TransferOrderDetailsPage.js
 import { expect } from "@playwright/test";
 
 export class TransferOrderDetailsPage {
   constructor(page) {
     this.page = page;
 
-    // -------------------------
-    // Edit order name
-    // -------------------------
+    // Data Test Ids 
     this.orderEditBtn = page.getByTestId("order-name-edit-btn");
-    this.editedOrderNameInput = page.getByTestId("edited-order-name-input");
-    this.saveEditedOrderNameBtn = page.getByTestId(
-      "save-edited-transfer-order-name-btn",
-    );
-    this.cancelEditedOrderNameBtn = page.getByTestId(
-      "cancel-editting-transfer-order-name-btn",
-    );
+    this.orderInput = page.getByTestId("edited-order-name-input");
+    this.saveOrderBtn = page.getByTestId("save-edited-transfer-order-name-btn");
+    this.cancelOrderBtn = page.getByTestId("cancel-editting-transfer-order-name-btn");
 
-    // -------------------------
-    // Edit store name modal
-    // -------------------------
     this.storeEditBtn = page.getByTestId("store-name-edit-btn");
-    this.updateFacilityRadioOptions = page.getByTestId(
-      "update-facility-radio-options",
-    );
-    this.saveStoreBtn = page.getByTestId(
-      "update-store-name-transfer-order-btn",
-    );
-    this.closeStoreModalBtn = page.getByTestId(
-      "update-store-name-close-modal-btn",
-    );
+    this.facilityOptions = page.getByTestId("update-facility-radio-options");
+    this.saveStoreBtn = page.getByTestId("update-store-name-transfer-order-btn");
+    this.closeStoreModalBtn = page.getByTestId("update-store-name-close-modal-btn");
   }
 
-  // Methods for Order Name
-  async editOrderName(newName) {
-    await expect(this.orderEditBtn).toBeVisible();
-    await this.orderEditBtn.click();
+  // Reusable methods
+  async click(element) {
+    await element.click();
+  }
 
-    await expect(this.editedOrderNameInput).toBeVisible();
-    await this.editedOrderNameInput.fill(newName);
+  async fill(element, value) {
+    await element.fill(value);
+  }
 
-    await expect(this.saveEditedOrderNameBtn).toBeVisible();
-    await this.saveEditedOrderNameBtn.click();
-
-    await expect(this.editedOrderNameInput).not.toBeVisible();
-    await expect(this.page.getByText(newName)).toBeVisible();
+  async editOrderName(name) {
+    await this.click(this.orderEditBtn);
+    await this.fill(this.orderInput, name);
+    await this.click(this.saveOrderBtn);
+    await expect(this.page.getByText(name)).toBeVisible();
   }
 
   async cancelEditOrderName() {
-    await expect(this.orderEditBtn).toBeVisible();
-    await this.orderEditBtn.click();
-
-    await expect(this.cancelEditedOrderNameBtn).toBeVisible();
-    await this.cancelEditedOrderNameBtn.click();
-
-    await expect(this.editedOrderNameInput).not.toBeVisible();
-  }
-  // Methods for Store / Facility
-
-  async openEditStoreModal() {
-    await expect(this.storeEditBtn).toBeVisible();
-    await this.storeEditBtn.click();
+    await this.click(this.orderEditBtn);
+    await this.click(this.cancelOrderBtn);
+    await expect(this.orderInput).not.toBeVisible();
   }
 
-  async selectFirstFacilityAndSave(expectedStoreName = null) {
-    await expect(this.updateFacilityRadioOptions.first()).toBeVisible();
-    await this.updateFacilityRadioOptions.first().click();
-    await expect(this.updateFacilityRadioOptions.first()).toBeChecked();
-
-    await expect(this.saveStoreBtn).toBeVisible();
-    await this.saveStoreBtn.click();
-
+  async editStore(expectedStoreName = null) {
+    await this.click(this.storeEditBtn);
+    const firstOption = this.facilityOptions.first();
+    await this.click(firstOption);
+    await expect(firstOption).toBeChecked();
+    await this.click(this.saveStoreBtn);
     if (expectedStoreName) {
       await expect(this.page.getByText(expectedStoreName)).toBeVisible();
     }
   }
 
   async closeStoreModal() {
-    await expect(this.closeStoreModalBtn).toBeVisible();
-    await this.closeStoreModalBtn.click();
+    await this.click(this.closeStoreModalBtn);
     await expect(this.closeStoreModalBtn).not.toBeVisible();
   }
 }
