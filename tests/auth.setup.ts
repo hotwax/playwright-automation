@@ -4,9 +4,8 @@ const path = require("path");
 
 const authFile = path.join(__dirname, "../playwright/.auth/user.json");
 
-test("login via UI and save storage state", async ({ page }) => {
+test("login via UI and save storage state", async ({page}: any) => {
   await page.goto(process.env.LOGIN_URL);
-  await page.getByRole("button", { name: "Login" }).click();
   await page.getByRole("textbox", { name: "OMS" }).fill("dev-oms");
   await page.getByRole("button", { name: "Next" }).click();
   await page
