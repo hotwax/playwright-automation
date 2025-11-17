@@ -1,11 +1,10 @@
-import { test, expect } from '@playwright/test';
+import { test } from "@playwright/test";
 
-import TestTransferOrderPage from '../../../pages/fullfillment-app/transfer-orders/test.page';
+import TransferOrderFlowPage from "../../pages/fullfillment-app/transfer-orders/transfer-order-flow.page";
 
-test('test', async ({ page }) => {
+test("test", async ({ page }) => {
+  const transferOrderFlow = new TransferOrderFlowPage(page);
 
- const trasferOrderPage = new TestTransferOrderPage(page)
-
- await trasferOrderPage.createTransferOrder("Order 123", "Central"); 
-
+  await transferOrderFlow.navigateToTransferOrders();
+  await transferOrderFlow.createTransferOrder("Order 123", "Central");
 });
