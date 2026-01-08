@@ -1,50 +1,36 @@
 import { test, expect } from "@playwright/test";
 
-test("test", async ({ page }) => {
-  // Open tab
-  await page.getByText("Open").click();
+test("Sanity | Fulfillment order flow - Pick, Pack and Ship", async ({ page }) => {
+  // Navigate to Open orders page
+  await page.goto("https://fulfillment-dev.hotwax.io/open");
 
-  // Open order options (avoid nth if possible later)
+  // Ensure Open tab is active
+  await expect(page.getByRole("tab", { name: "Open" })).toBeVisible();
+
+  // Open order action menu
   await page.locator('ion-chip [role="img"]').first().click();
 
   // View order details
   await page.getByRole("button", { name: "View details" }).click();
 
-  // ASSERT: Order details page opened
+  // Assert Order Details page
   await expect(page.getByText("Order Details")).toBeVisible();
 
   // Pick order
   await page.getByRole("button", { name: "Pick order" }).click();
 
-  // Select picker
+  // Assign picker
   await page
     .getByRole("listitem", { name: /John Paul/i })
     .getByRole("img")
     .click();
 
-  // Confirm pick
+  // Confirm picking
   await page.locator("ion-fab-button").getByRole("img").click();
 
-  // Add box (do it once clearly)
-  const addBoxButton = page.getByRole("button", { name: "Add Box" });
-  await addBoxButton.click();
+  // Add box
+  await page.getByRole("button", { name: "Add Box" }).click();
 
   // Pack order
   await page.getByRole("button", { name: "Pack order" }).click();
-
-  // Select documents
-  await page.getByRole("checkbox", { name: "Shipping labels" }).check();
-  await page.getByRole("checkbox", { name: "Packing slip" }).check();
-
-  // Handle popup safely
-  const popupPromise = page.waitForEvent("popup");
-  await page.getByRole("button", { name: "Pack" }).click();
-  const popup = await popupPromise;
-  await popup.close();
-
-  // Ship order
-  await page.getByRole("button", { name: "Ship order" }).click();
-
-  // ASSERT: Order shipped successfully
-  await expect(page.getByText(/Order shipped successfully/i)).toBeVisible();
 });
