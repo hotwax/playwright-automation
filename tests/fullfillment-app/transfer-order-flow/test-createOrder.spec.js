@@ -4,14 +4,20 @@ import TransferOrderFlowPage from "../../pages/fullfillment-app/transfer-orders/
 
 test("test", async ({ page }) => {
   const transferOrderFlow = new TransferOrderFlowPage(page);
+  await page.goto("https://fulfillment-dev.hotwax.io/open");
+  await page.locator("#ion-input-0").fill("hotwax.user");
+  await page.locator("#ion-input-1").fill("hotwax@786");
+  await page.waitForTimeout(1000);
+  await page.getByRole("button", { name: "Login" }).click();
+  await page.waitForTimeout(2000);
 
   await transferOrderFlow.navigateToTransferOrders();
   await transferOrderFlow.createTransferOrder("Order Test", "Central");
 
   await transferOrderFlow.openSearchTab();
-  await transferOrderFlow.searchAndAddProduct("MH09");
-  await transferOrderFlow.searchAndAddProduct("MH03");
-  await transferOrderFlow.searchAndAddProduct("MH06");
+  await transferOrderFlow.searchAndAddProduct("MH08");
+  await transferOrderFlow.searchAndAddProduct("MH02");
+  await transferOrderFlow.searchAndAddProduct("MH01");
 
   await transferOrderFlow.setProductQuantity("product-card-btn-01", "12");
   await transferOrderFlow.bookProductByQoh("product-card-btn-02");
@@ -19,12 +25,12 @@ test("test", async ({ page }) => {
 
   await transferOrderFlow.searchUsingViewMore(
     "Red",
-    "MH09-M-Red10011Add to Transfer"
+    "MH09-M-Red10011Add to Transfer",
   );
   await transferOrderFlow.resetProductSearch();
   await transferOrderFlow.searchAndAddByResult(
     "SKU",
-    "SKU11112121Add to Transfer"
+    "SKU11112121Add to Transfer",
   );
   await transferOrderFlow.resetProductSearch();
   await transferOrderFlow.closeViewMoreModal();

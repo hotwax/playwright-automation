@@ -5,13 +5,18 @@ export default class TransferOrderFlowPage {
     // Landing and creation flow
     this.transferOrdersLink = page.getByText("Transfer Orders");
     this.createTransferOrderBtn = page.getByTestId("create-transfer-order-btn");
-    this.transferNameInput = page.getByRole("textbox", { name: "Transfer name" });
-    this.facilitySearchInput = page.getByRole("searchbox", { name: "search text" });
+    this.transferNameInput = page.getByRole("textbox", {
+      name: "Transfer name",
+    });
+    this.facilitySearchInput = page.getByRole("searchbox", {
+      name: "search text",
+    });
     this.facilityRadioOptions = page.getByTestId("facility-radio-options");
     this.saveTransferOrderBtn = page.getByTestId("save-transfer-order-btn");
 
     // Order details - search and items
-    this.searchTab = page.locator("ion-segment-button").nth(1);
+    // this.searchTab = page.locator("ion-segment-button").nth(1);
+    this.searchTab = page.locator("ion-segment-button[content-id='search']");
     this.productSearchInput = page
       .getByTestId("search-product-input")
       .getByRole("searchbox", { name: "search text" });
@@ -21,7 +26,9 @@ export default class TransferOrderFlowPage {
     this.viewMoreResultsButton = page.getByTestId("view-more-results");
     this.resetButton = page.getByRole("button", { name: "reset" });
     this.viewMoreCloseModal = page.getByTestId("viewmore-close-modal");
-    this.discardOrderButton = page.getByRole("button", { name: "Discard order" });
+    this.discardOrderButton = page.getByRole("button", {
+      name: "Discard order",
+    });
     this.shipLaterButton = page.getByRole("button", { name: "Ship later" });
     this.shipLaterContinueButton = page.getByTestId("shiplater-continue-btn");
 
@@ -48,7 +55,9 @@ export default class TransferOrderFlowPage {
     this.saveEditedOrderNameBtn = page.getByTestId(
       "save-edited-transfer-order-name-btn",
     );
-    this.storeNameEditButton = page.getByTestId("store-name-edit-btn").locator("button");
+    this.storeNameEditButton = page
+      .getByTestId("store-name-edit-btn")
+      .locator("button");
     this.updateStoreNameBtn = page.getByTestId(
       "update-store-name-transfer-order-btn",
     );
@@ -66,6 +75,7 @@ export default class TransferOrderFlowPage {
   async navigateToTransferOrders() {
     await this.page.waitForTimeout(5000);
     await this.page.goto("https://fulfillment-dev.hotwax.io/open");
+    await this.page.waitForTimeout(2000);
     await this.transferOrdersLink.click();
   }
 

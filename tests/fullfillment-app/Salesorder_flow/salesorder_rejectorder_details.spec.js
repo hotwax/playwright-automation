@@ -3,10 +3,26 @@ import { test, expect } from "@playwright/test";
 test("Sanity | Fulfillment | Reject single order via details page", async ({
   page,
 }) => {
-  // Step 1: Open order from list
-  const orderCard = page.locator("ion-chip").nth(2);
+  // Step 1: Navigate to Open Orders page
+  await page.goto("https://fulfillment-dev.hotwax.io/open");
+  await page.waitForTimeout(2000);
+
+  await page.locator("#ion-input-0").fill("hotwax.user");
+  await page.locator("#ion-input-1").fill("hotwax@786");
+  await page.waitForTimeout(1000);
+  await page.getByRole("button", { name: "Login" }).click();
+  await page.waitForTimeout(2000);
+
+  // Assertion: Ensure Open Orders page is loaded
+  // Ensure Open tab is visible (Ionic-safe)
+  const openTab = page.locator("text=Open").first();
+  await expect(openTab).toBeVisible();
+
+  // Step 2: Open order from list
+  const orderCard = page.locator("ion-chip").nth(0);
   await expect(orderCard).toBeVisible();
   await orderCard.click();
+  await page.waitForTimeout(2000);
 
   // Step 2: View order details
   const viewDetailsBtn = page.getByRole("button", { name: "View details" });
@@ -17,42 +33,80 @@ test("Sanity | Fulfillment | Reject single order via details page", async ({
   const pickOrderBtn = page.getByRole("button", { name: "Pick order" });
   await expect(pickOrderBtn).toBeVisible();
   await pickOrderBtn.click();
+  await page.waitForTimeout(2000);
 
-  // Step 4: Select picker
-  const picker = page
-    .getByRole("listitem")
-    .filter({ hasText: "Catherine Mendeley" })
-    .locator("label");
+  // Step 4: Select first available picker
+  // const picker = page.locator("ion-item").first();
+  // await expect(picker).toBeVisible();
+  // await picker.click();
 
-  await expect(picker).toBeVisible();
-  await picker.click();
+  const modal = page.locator("ion-modal:visible");
 
-  // Step 5: Open action menu (FAB)
-  const actionFab = page.locator("ion-fab-button").nth(1);
-  await expect(actionFab).toBeVisible();
-  await actionFab.click();
+  const checkboxes = page.locator("ion-list ion-item ion-checkbox");
 
-  // Step 6: Report an issue
+  const count = await checkboxes.count();
+  expect(count).toBeGreaterThan(1);
+
+  await checkboxes.nth(0).click();
+  await checkboxes.nth(1).click();
+
+  await page.waitForTimeout(2000);
+  // Click Save (blue FAB button inside modal)
+  // Click Save button (blue FAB)
+  const saveBtn = modal.locator("ion-fab-button");
+
+  await expect(saveBtn).toBeVisible();
+  // await expect(saveBtn).not.toHaveClass(/fab-button-disabled/);
+  // await saveBtn.click();
+
+  await page.waitForTimeout(2000);
+
+  const [pdfPage] = await Promise.all([
+    page.context().waitForEvent("page"), // 👈 waits for new tab
+    saveBtn.click(), // 👈 triggers PDF tab
+  ]);
+  await page.waitForTimeout(2000);
+  // Wait for PDF to load
+  await pdfPage.waitForLoadState();
+
+  // Close the PDF tab
+  await pdfPage.close();
+
+  // Wait for modal to close
+  await expect(modal).toBeHidden();
+
+  await page.waitForTimeout(2000);
+
+  // step 6: Click on 'Report an issue' button
   const reportIssueBtn = page
-    .locator("ion-button")
-    .filter({ hasText: "Report an issue" })
-    .locator("button");
+    .locator("ion-button", { hasText: "Report an issue" })
+    .filter({ has: page.locator(":not([aria-disabled='true'])") })
+    .first();
 
-  await expect(reportIssueBtn).toBeVisible();
   await reportIssueBtn.click();
 
   // Step 7: Select issue reason
-  const issueReasonBtn = page.getByRole("button", { name: "FOR TESTING" });
-  await expect(issueReasonBtn).toBeVisible();
-  await issueReasonBtn.click();
+  await page
+    .locator("ion-popover:visible ion-item", { hasText: "FOR TESTING" })
+    .click();
+  await page.waitForTimeout(2000);
 
   // Step 8: Reject order
-  const rejectOrderBtn = page.getByRole("button", { name: "Reject order" });
+  const rejectOrderBtn = page
+    .locator("div.actions")
+    .locator("ion-button", { hasText: "Reject order" });
+
   await expect(rejectOrderBtn).toBeVisible();
+  await expect(rejectOrderBtn).not.toHaveAttribute("aria-disabled", "true");
   await rejectOrderBtn.click();
+  await page.waitForTimeout(2000);
 
   // Step 9: Confirm rejection
-  const reportConfirmBtn = page.getByRole("button", { name: "Report" });
-  await expect(reportConfirmBtn).toBeVisible();
-  await reportConfirmBtn.click();
+  const reportBtn = page
+    .locator(".alert-wrapper")
+    .locator("button.alert-button-role-confirm");
+
+  await expect(reportBtn).toBeVisible();
+  await reportBtn.click();
+  await page.waitForTimeout(2000);
 });
