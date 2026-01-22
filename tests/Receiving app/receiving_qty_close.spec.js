@@ -19,22 +19,29 @@ test("Sanity | Receiving | Purchase Order receive flow (direct URL)", async ({
   const firstOrder = page.locator("ion-item:has(ion-label h3)").first();
   await firstOrder.click();
   await page.waitForTimeout(2000);
+  // Click on Qty input field of first item and change value to 5
+  // Step 6: Fill qty = 5 for all items
+  const qtyInputs = page.locator('ion-item input.native-input[type="number"]');
+  const count = await qtyInputs.count();
 
-  const receiveAllButtons = page.locator("ion-button", {
-    hasText: "Receive All",
-  });
-
-  const count = await receiveAllButtons.count();
-
-  // click all "Receive All" buttons
   for (let i = 0; i < count; i++) {
-    const button = receiveAllButtons.nth(i);
-    await button.scrollIntoViewIfNeeded();
-    await button.click();
-    await page.waitForTimeout(1000); // small gap so UI can update
+    const input = qtyInputs.nth(i);
+
+    await input.scrollIntoViewIfNeeded();
+
+    // Force focus on real input (prevents Receive All clicks)
+    await input.evaluate((el) => el.focus());
+
+    // Clear old value
+    await input.press("Control+A");
+    await input.press("Backspace");
+
+    // Type new qty
+    await input.type("5");
+
+    // Let Ionic update
+    await page.waitForTimeout(300);
   }
-  await page.getByText("Receive", { exact: true }).click();
-  await page.waitForTimeout(5000);
-  await page.locator(".alert-button-inner", { hasText: "Proceed" }).click();
-  await page.waitForTimeout(5000);
+  // Step 8: Confirm Proceed
+  await page.getByText("Proceed", { exact: true }).click();
 });

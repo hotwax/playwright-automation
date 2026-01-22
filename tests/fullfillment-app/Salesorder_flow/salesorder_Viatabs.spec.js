@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 test("Sanity | Fulfillment bulk order flow - Print Picklist, Pack and Ship", async ({
   page,
 }) => {
-  // Navigate to Open orders page
+  // Navigate to Open orders page.
   await page.goto("https://fulfillment-dev.hotwax.io/open");
 
   await page.waitForTimeout(2000);
@@ -14,8 +14,8 @@ test("Sanity | Fulfillment bulk order flow - Print Picklist, Pack and Ship", asy
   await page.getByRole("button", { name: "Login" }).click();
   await page.waitForTimeout(2000);
 
-  //Assertion: Ensure Open Orders page is loaded
-  // Ensure Open tab is visible (Ionic-safe)
+  // Assertion: Ensure Open Orders page is loaded
+  // Ensure Open tab is visible (Ionic-safe).
   const openTab = page.locator("text=Open").first();
   await expect(openTab).toBeVisible();
 
@@ -41,10 +41,10 @@ test("Sanity | Fulfillment bulk order flow - Print Picklist, Pack and Ship", asy
   await expect(saveBtn).toBeVisible();
   await page.waitForTimeout(2000);
 
-  // Handle new tab for PDF
+  // Handle new tab for PDF.
   const [pdfPage] = await Promise.all([
-    page.context().waitForEvent("page"), // 👈 waits for new tab
-    saveBtn.click(), // 👈 triggers PDF tab
+    page.context().waitForEvent("page"), //  waits for new tab
+    saveBtn.click(), //  triggers PDF tab
   ]);
   await page.waitForTimeout(2000);
   // Wait for PDF to load
@@ -53,7 +53,7 @@ test("Sanity | Fulfillment bulk order flow - Print Picklist, Pack and Ship", asy
   // Close the PDF tab
   await pdfPage.close();
 
-  // Wait for modal to close
+  // Wait for modal to close. 
   await expect(modal).toBeHidden();
 
   await page.waitForTimeout(2000);
@@ -90,6 +90,7 @@ test("Sanity | Fulfillment bulk order flow - Print Picklist, Pack and Ship", asy
   // const popup = await popupPromise;
   // await popup.close();
   await page.waitForTimeout(5000);
+
   // Handle new tab for PDF
   const [pdfPage2] = await Promise.all([
     page.context().waitForEvent("page"), // waits for new tab
