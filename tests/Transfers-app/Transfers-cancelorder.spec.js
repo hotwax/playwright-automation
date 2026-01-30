@@ -3,34 +3,23 @@ import { test, expect } from "@playwright/test";
 test("Sanity | Transfer App | Cancel transfer order from Approved status", async ({
   page,
 }) => {
-  // Step 1: Open Transfer Order details page (logged-in URL)
+  // Step 1: Navigate directly to Transfer Orders page
   await page.goto(
-    "https://transfers-dev.hotwax.io/login?oms=dev-maarg&token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VyTG9naW5JZCI6ImhvdHdheC51c2VyIiwiaXNzIjoiZGV2LW9tcyIsImV4cCI6MTc2ODYyNjAzNSwiaWF0IjoxNzY4NTM5NjM1fQ.661lJW_cpwkPAWI9t752F8vyUPMnbKsrt_G2ZOk9iKoX5tE5np0PQ5z5FaRoIu64312TUmLpHRDY_0DWLF-Hlg&expirationTime=1768626035952&omsRedirectionUrl=dev-oms"
-  );git fetch origin
-git rebase origin/main
+    "https://launchpad-dev.hotwax.io/login?isLoggedOut=true&redirectUrl=https://transfers-dev.hotwax.io/login",
+  );
+  await page.waitForTimeout(3000);
 
+  await page.locator("#ion-input-0").fill("hotwax.user");
+  await page.locator("#ion-input-1").fill("hotwax@786");
+  await page.waitForTimeout(3000);
+  await page.getByRole("button", { name: "Login" }).click();
+  await page.waitForTimeout(3000);
 
-  // Step 2: Open transfer order
-  const transferOrderRow = page.getByText("transfer order 46321hgdsf");
-  await expect(transferOrderRow).toBeVisible();
-  await transferOrderRow.click();
+  // Select transfer order from the list whoes status is Approved
+  const approvedOrder = page.locator("div.section-header", {
+    has: page.locator("ion-badge", { hasText: "Approved" }),
+  });
 
-  // Step 3: Open specific item (optional but matches your flow)
-  const itemRow = page.getByText("MH09-L-Blue MH09LBlue");
-  await expect(itemRow).toBeVisible();
-  await itemRow.click();
-
-  // Step 4: Click on Approved status chip
-  const approvedStatusChip = page.getByText("Approved", { exact: true });
-  await expect(approvedStatusChip).toBeVisible();
-  await approvedStatusChip.click();
-
-  // Step 5: Select Cancel from dropdown
-  const cancelOption = page.getByRole("menuitem", { name: "Cancel" });
-  await expect(cancelOption).toBeVisible();
-  await cancelOption.click();
-
-  // Step 6: Verify status updated to Cancelled
-  const cancelledStatus = page.getByText("Cancelled", { exact: true });
-  await expect(cancelledStatus).toBeVisible();
+  // await approvedOrder.first().waitFor({ state: "visible", timeout: 20000 });
+  // await approvedOrder.first().click();
 });

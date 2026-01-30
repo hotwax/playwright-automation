@@ -20,7 +20,6 @@ test("Sanity | Receiving | Purchase Order receive flow (direct URL)", async ({
   await firstOrder.click();
   await page.waitForTimeout(2000);
   // Click on Qty input field of first item and change value to 5
-  // Step 6: Fill qty = 5 for all items
   const qtyInputs = page.locator('ion-item input.native-input[type="number"]');
   const count = await qtyInputs.count();
 
