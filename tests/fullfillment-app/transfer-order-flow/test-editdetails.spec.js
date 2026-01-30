@@ -2,7 +2,7 @@ import { test } from "@playwright/test";
 
 import TransferOrderFlowPage from "../../pages/fullfillment-app/transfer-orders/transfer-order-flow.page";
 
-test("test", async ({ page }) => {
+test("test-edit details", async ({ page }) => {
   const transferOrderFlow = new TransferOrderFlowPage(page);
   page.goto("https://fulfillment-dev.hotwax.io/open");
   await page.locator("#ion-input-0").fill("hotwax.user");

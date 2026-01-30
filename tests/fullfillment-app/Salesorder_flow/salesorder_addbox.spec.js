@@ -1,8 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test("Sanity | Fulfillment order flow - Pick, Pack and Ship", async ({
-  page,
-}) => {
+test("Sanity | Sales Order - add Box logic ", async ({ page }) => {
   // Step 1: Navigate to Open Orders page
   await page.goto("https://fulfillment-dev.hotwax.io/open");
   await page.waitForTimeout(2000);

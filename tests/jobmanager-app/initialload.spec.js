@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test("Sanity | Run Now job  from Pipeline tab ", async ({ page }) => {
+test("Sanity | Initital load job run ", async ({ page }) => {
   // Step 1: Navigate to Job Manager pipeline page
   await page.goto("https://job-manager-dev.hotwax.io/pipeline");
   await page.waitForTimeout(2000);
@@ -17,15 +17,14 @@ test("Sanity | Run Now job  from Pipeline tab ", async ({ page }) => {
   ).toBeVisible();
 
   // Ensure the pipeline tab is visible and clicked
-  await page.locator("ion-item", { hasText: "Pipeline" }).click();
+  await page.locator("ion-item", { hasText: "Initial load" }).click();
 
   await page.waitForTimeout(2000);
 
   // refresh the page to load jobs latest data
   await page.reload();
   await page.waitForTimeout(2000);
-  // click on the 1st job at the pipeline to run now
-  await page.locator("ion-card").first().click();
+  await page.locator("ion-item", { hasText: "Enabled" }).click();
   await page.waitForTimeout(2000);
   await page.getByRole("button", { name: "Run now", exact: true }).click();
   await page.waitForTimeout(2000);
@@ -39,9 +38,18 @@ test("Sanity | Run Now job  from Pipeline tab ", async ({ page }) => {
   // Click Run now inside dialog
   await page.getByRole("button", { name: "Run now", exact: true }).click();
   await page.waitForTimeout(2000);
+  // Ensure the pipeline tab is visible and clicked
+  await page.locator("ion-item", { hasText: "Pipeline" }).click();
+
+  await page.waitForTimeout(2000);
+
+  // refresh the page to load jobs latest data
+  await page.reload();
+  await page.waitForTimeout(2000);
   await page.locator("ion-segment-button", { hasText: "History" }).click();
   await page.waitForTimeout(2000);
   // Verify that the job is moved to History tab and cancelled status is visible.
+
   await expect(
     page.locator(".job-card, ion-card").first().locator("text=Finished"),
   ).toBeVisible();

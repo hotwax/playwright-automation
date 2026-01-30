@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test("Sanity | Fulfillment bulk order flow - Print Picklist, Pack and Ship", async ({
+test("Sanity | Fulfillment bulk order flow - Print Picklist, Pack and Ship via tabs ", async ({
   page,
 }) => {
   // Navigate to Open orders page.
@@ -53,7 +53,7 @@ test("Sanity | Fulfillment bulk order flow - Print Picklist, Pack and Ship", asy
   // Close the PDF tab
   await pdfPage.close();
 
-  // Wait for modal to close. 
+  // Wait for modal to close.
   await expect(modal).toBeHidden();
 
   await page.waitForTimeout(2000);

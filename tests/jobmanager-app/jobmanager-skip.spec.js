@@ -1,8 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test("Sanity | Fulfillment order flow - Pick, Pack and Ship", async ({
-  page,
-}) => {
+test("Sanity |skip jobs from pipeline", async ({ page }) => {
   // Step 1: Navigate to Job Manager pipeline page
   await page.goto("https://job-manager-dev.hotwax.io/pipeline");
   await page.waitForTimeout(2000);

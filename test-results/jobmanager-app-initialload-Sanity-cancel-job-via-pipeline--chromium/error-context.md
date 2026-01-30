@@ -1,0 +1,300 @@
+# Page snapshot
+
+```yaml
+- navigation "menu":
+  - text: Job Manager
+  - list:
+    - listitem:
+      - button "Pipeline":
+        - img:
+          - img
+        - text: Pipeline
+    - listitem:
+      - button "Initial load":
+        - img:
+          - img
+        - text: Initial load
+    - listitem:
+      - button "Pre-order":
+        - img:
+          - img
+        - text: Pre-order
+    - listitem:
+      - button "Orders":
+        - img:
+          - img
+        - text: Orders
+    - listitem:
+      - button "Fulfillment":
+        - img:
+          - img
+        - text: Fulfillment
+    - listitem:
+      - button "Inventory":
+        - img:
+          - img
+        - text: Inventory
+    - listitem:
+      - button "Products":
+        - img:
+          - img
+        - text: Products
+    - listitem:
+      - button "Miscellaneous":
+        - img:
+          - img
+        - text: Miscellaneous
+    - listitem:
+      - button "Settings":
+        - img:
+          - img
+        - text: Settings
+  - contentinfo:
+    - paragraph: dev-oms
+    - text: Africa/Libreville
+    - button "Demo Store"
+    - paragraph: HotWax Sandbox
+- banner:
+  - text: Pipeline
+  - button "menu":
+    - img:
+      - img
+  - search:
+    - searchbox "search text"
+  - tablist:
+    - tab "Pending" [selected]
+    - tab "Running"
+    - tab "History"
+- main:
+  - main:
+    - button "Update Sales Order Items Promise Date in 7 minutes Updates promise dates on Sales Order items when arrival date of a PO is changed. 12:31 PM Every 15 Minutes 0 JOB_UPDT_SO_PROMS_DT Skip Cancel":
+      - heading "Update Sales Order Items Promise Date" [level=2]
+      - text: in 7 minutes
+      - paragraph: Updates promise dates on Sales Order items when arrival date of a PO is changed.
+      - img:
+        - img
+      - text: 12:31 PM
+      - img:
+        - img
+      - text: Every 15 Minutes
+      - img:
+        - img
+      - text: "0"
+      - img:
+        - img
+      - text: JOB_UPDT_SO_PROMS_DT
+      - img:
+        - img
+      - button "Skip"
+      - button "Cancel"
+      - button:
+        - img:
+          - img
+    - button "Process bulk imported files in 7 minutes Process bulk imported files 12:31 PM Every 15 Minutes 0 JOB_PRC_PND_DML Skip Cancel":
+      - heading "Process bulk imported files" [level=2]
+      - text: in 7 minutes
+      - paragraph: Process bulk imported files
+      - img:
+        - img
+      - text: 12:31 PM
+      - img:
+        - img
+      - text: Every 15 Minutes
+      - img:
+        - img
+      - text: "0"
+      - img:
+        - img
+      - text: JOB_PRC_PND_DML
+      - img:
+        - img
+      - button "Skip"
+      - button "Cancel"
+      - button:
+        - img:
+          - img
+    - button "Process bulk imported files in 7 minutes Process bulk imported files 12:31 PM Every 15 Minutes 0 JOB_PRC_PND_DML Skip Cancel":
+      - heading "Process bulk imported files" [level=2]
+      - text: in 7 minutes
+      - paragraph: Process bulk imported files
+      - img:
+        - img
+      - text: 12:31 PM
+      - img:
+        - img
+      - text: Every 15 Minutes
+      - img:
+        - img
+      - text: "0"
+      - img:
+        - img
+      - text: JOB_PRC_PND_DML
+      - img:
+        - img
+      - button "Skip"
+      - button "Cancel"
+      - button:
+        - img:
+          - img
+    - button "Remove backorder tags in 7 minutes Remove backorder tags from parent products on eCommerce. 12:31 PM Every 15 Minutes 0 JOB_RMV_BACKORD_VRT Skip Cancel":
+      - heading "Remove backorder tags" [level=2]
+      - text: in 7 minutes
+      - paragraph: Remove backorder tags from parent products on eCommerce.
+      - img:
+        - img
+      - text: 12:31 PM
+      - img:
+        - img
+      - text: Every 15 Minutes
+      - img:
+        - img
+      - text: "0"
+      - img:
+        - img
+      - text: JOB_RMV_BACKORD_VRT
+      - img:
+        - img
+      - button "Skip"
+      - button "Cancel"
+      - button:
+        - img:
+          - img
+    - button "Remove backorder tags in 7 minutes Remove backorder tags from parent products on eCommerce. 12:31 PM Every 15 Minutes 0 JOB_RMV_BACKORD_VRT Skip Cancel":
+      - heading "Remove backorder tags" [level=2]
+      - text: in 7 minutes
+      - paragraph: Remove backorder tags from parent products on eCommerce.
+      - img:
+        - img
+      - text: 12:31 PM
+      - img:
+        - img
+      - text: Every 15 Minutes
+      - img:
+        - img
+      - text: "0"
+      - img:
+        - img
+      - text: JOB_RMV_BACKORD_VRT
+      - img:
+        - img
+      - button "Skip"
+      - button "Cancel"
+      - button:
+        - img:
+          - img
+    - button "Add backorder tags in 7 minutes Add backorder tags to parent products on eCommerce. 12:31 PM Every 15 Minutes 0 JOB_ADD_BACKORD_VRT Skip Cancel":
+      - heading "Add backorder tags" [level=2]
+      - text: in 7 minutes
+      - paragraph: Add backorder tags to parent products on eCommerce.
+      - img:
+        - img
+      - text: 12:31 PM
+      - img:
+        - img
+      - text: Every 15 Minutes
+      - img:
+        - img
+      - text: "0"
+      - img:
+        - img
+      - text: JOB_ADD_BACKORD_VRT
+      - img:
+        - img
+      - button "Skip"
+      - button "Cancel"
+      - button:
+        - img:
+          - img
+    - button "Add backorder tags in 7 minutes Add backorder tags to parent products on eCommerce. 12:31 PM Every 15 Minutes 0 JOB_ADD_BACKORD_VRT Skip Cancel":
+      - heading "Add backorder tags" [level=2]
+      - text: in 7 minutes
+      - paragraph: Add backorder tags to parent products on eCommerce.
+      - img:
+        - img
+      - text: 12:31 PM
+      - img:
+        - img
+      - text: Every 15 Minutes
+      - img:
+        - img
+      - text: "0"
+      - img:
+        - img
+      - text: JOB_ADD_BACKORD_VRT
+      - img:
+        - img
+      - button "Skip"
+      - button "Cancel"
+      - button:
+        - img:
+          - img
+    - button "Process uploads to eCommerce in 7 minutes Process generated files into eCommerce as resouces become available. 12:31 PM Every 15 Minutes 0 JOB_UL_PRCS Skip Cancel":
+      - heading "Process uploads to eCommerce" [level=2]
+      - text: in 7 minutes
+      - paragraph: Process generated files into eCommerce as resouces become available.
+      - img:
+        - img
+      - text: 12:31 PM
+      - img:
+        - img
+      - text: Every 15 Minutes
+      - img:
+        - img
+      - text: "0"
+      - img:
+        - img
+      - text: JOB_UL_PRCS
+      - img:
+        - img
+      - button "Skip"
+      - button "Cancel"
+      - button:
+        - img:
+          - img
+    - button "Process uploads to eCommerce in 7 minutes Process generated files into eCommerce as resouces become available. 12:31 PM Every 15 Minutes 0 JOB_UL_PRCS Skip Cancel":
+      - heading "Process uploads to eCommerce" [level=2]
+      - text: in 7 minutes
+      - paragraph: Process generated files into eCommerce as resouces become available.
+      - img:
+        - img
+      - text: 12:31 PM
+      - img:
+        - img
+      - text: Every 15 Minutes
+      - img:
+        - img
+      - text: "0"
+      - img:
+        - img
+      - text: JOB_UL_PRCS
+      - img:
+        - img
+      - button "Skip"
+      - button "Cancel"
+      - button:
+        - img:
+          - img
+    - button "Reset Newly Launched Product Inventory To Shopify in 22 minutes Reset Newly Launched Product Inventory To Shopify 12:46 PM Every Hour 0 RST_NEWLNCH_PROD_INV Skip Cancel":
+      - heading "Reset Newly Launched Product Inventory To Shopify" [level=2]
+      - text: in 22 minutes
+      - paragraph: Reset Newly Launched Product Inventory To Shopify
+      - img:
+        - img
+      - text: 12:46 PM
+      - img:
+        - img
+      - text: Every Hour
+      - img:
+        - img
+      - text: "0"
+      - img:
+        - img
+      - text: RST_NEWLNCH_PROD_INV
+      - img:
+        - img
+      - button "Skip"
+      - button "Cancel"
+      - button:
+        - img:
+          - img
+```
